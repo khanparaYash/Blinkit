@@ -8,6 +8,7 @@ import {
   resetPassword,
   updateUserDetails,
   uploadAvatar,
+  userDetails,
   verifyEmailController,
   verifyForgotPasswordOtp,
 } from "../controllers/user.controller.js";
@@ -15,6 +16,7 @@ import { auth } from "../middleware/auth.js";
 import upload from "../middleware/multer.js";
 const userRouter = Router();
 
+userRouter.get("/user-details",auth, userDetails);
 userRouter.post("/register", registerUserController);
 userRouter.post("/verify-email", verifyEmailController);
 userRouter.post("/login", loginController);

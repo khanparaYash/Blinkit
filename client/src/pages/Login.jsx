@@ -6,11 +6,14 @@ import toast from "react-hot-toast";
 import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import { AxiosTostError } from "../utils/AxiosToastError";
+import { useDispatch } from "react-redux";
+import { fetchUserDetails } from "../utils/fetchUserDetails";
+import { setUserDetails } from "../store/userSlice";
 
 function Login() {
   const [passwordshow, setPasswordshow] = useState(false);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -37,8 +40,12 @@ function Login() {
       });
       if (response.data.success) {
         toast.success(response.data.message);
-        localStorage.setItem('accessToken',response.data.data.accessToken)
-        localStorage.setItem('refreshToken',response.data.data.refreshToken)
+        localStorage.setItem("accesstoken", response.data.data.accesstoken);
+        localStorage.setItem("refreshtoken", response.data.data.refreshtoken);
+
+        const user = await fetchUserDetails();
+        dispatch(setUserDetails(user.data.data));
+
         setData({
           email: "",
           password: "",
@@ -98,7 +105,10 @@ function Login() {
             </div>
             <p className="  text-sm text-gray-600">
               Forgot password?{" "}
-              <Link to={"/forgot-password"} className="text-blue-600 hover:underline">
+              <Link
+                to={"/forgot-password"}
+                className="text-blue-600 hover:underline"
+              >
                 click me!
               </Link>
             </p>
