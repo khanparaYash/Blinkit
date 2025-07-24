@@ -7,6 +7,14 @@ import Register from "../pages/Register"
 import ForgotPassword from "../pages/ForgotPassword";
 import OtpVerification from "../pages/OtpVerification";
 import ResetPassword from "../pages/ResetPassword";
+import Dashboard from "../layouts/Dashboard";
+import Profile from "../pages/Profile";
+import MyOrder from "../pages/MyOrder";
+import Address from "../pages/Address";
+import CategoryPage from "../pages/CategoryPage";
+import SubCategory from "../pages/SubCategory";
+import UploadProduct from "../pages/UploadProduct";
+import ProductAdmin from "../pages/ProductAdmin";
 
 
 const router=createBrowserRouter([
@@ -19,28 +27,62 @@ const router=createBrowserRouter([
                 element:<Home/>
             },
             {
-                path:"/search",
+                path:"search",
                 element:<SearchPage/>
             },
             {
-                path:"/login",
+                path:"login",
                 element:<Login/>
             },
             {
-                path:"/register",
+                path:"register",
                 element:<Register/>
             },
             {
-                path:"/forgot-password",
+                path:"forgot-password",
                 element:<ForgotPassword/>
             },
             {
-                path:"/otp-verification",
+                path:"otp-verification",
                 element:<OtpVerification/>
             },
             {
-                path:"/reset-password",
+                path:"reset-password",
                 element:<ResetPassword/>
+            },
+            {
+                path:"dashboard",
+                element:<Dashboard/>,
+                children:[
+                    {
+                        path:"profile",
+                        element:<Profile/>
+                    },
+                    {
+                        path:"myOrders",
+                        element:<MyOrder/>
+                    },
+                    {
+                        path:"address",
+                        element:<Address/>
+                    },
+                    {
+                        path:"category",
+                        element:<CategoryPage/>
+                    },
+                    {
+                        path:"sub-category",
+                        element:<SubCategory/>
+                    },
+                    {
+                        path:"upload-product",
+                        element:<UploadProduct/>
+                    },
+                    {
+                        path:"product",
+                        element:<ProductAdmin/>
+                    },
+                ]
             },
         ]
     }

@@ -33,4 +33,16 @@ export const SummaryApi = {
     url:'/api/user/logout',
     method:"get",
   },
+  upload_avatar:{
+    url:'/api/user/upload-avatar',
+    method:"put",
+  },
+  add_Category:{
+    url:'api/category/add-category',
+    method:"post"
+  },
+  upload_Image:{
+    url:"api/file/upload",
+    method:"post"
+  }
 };

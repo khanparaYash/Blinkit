@@ -193,6 +193,8 @@ export async function uploadAvatar(req, res) {
 
     return res.json({
       message: "upload profile",
+      error:false,
+      success:true,
       data: { avatar: upload.url },
     });
   } catch (error) {
@@ -374,7 +376,7 @@ export async function resetPassword(req, res) {
 export async function refreshToken(req, res) {
   try {
     const refreshToken =
-      req.cookie.refreshToken || req?.header?.authorization?.split(" ")[1];
+      req.cookie.refreshToken || req?.headers?.authorization?.split(" ")[1];
     if (!refreshToken) {
       return res.status(401).json({
         message: "Invalid token",
