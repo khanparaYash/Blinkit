@@ -4,11 +4,13 @@ import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import toast from "react-hot-toast";
 
-function UploadCategoryModel({fetchdata ,onclose }) {
+function EditCategory({fetchdata,dataEdit:edit, onclose }) {
   const [data, setData] = useState({
-    name: "",
-    image: "",
+    _id:edit._id,
+    name: edit.name,
+    image: edit.image,
   });
+
   const [loading, setLoding] = useState(false);
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -24,16 +26,17 @@ function UploadCategoryModel({fetchdata ,onclose }) {
     e.preventDefault();
     try {
       setLoding(true);
+      console.log(data);
+      
       const response = await Axios({
-        ...SummaryApi.add_Category,
+        ...SummaryApi.update_category,
         data: data,
       });
-      if (response.data.success) {
+      const { data: responseData } = response;
+      if (responseData.success) {
         toast.success(response.data.message);
-        fetchdata()
-        onclose()
-        console.log("asdfasdfs");
-        
+        onclose();
+        fetchdata();
       }
     } catch (error) {
       console.log(error);
@@ -59,7 +62,7 @@ function UploadCategoryModel({fetchdata ,onclose }) {
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
       <div className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg">
-        <h3 className="text-lg font-semibold mb-4">Add New Category</h3>
+        <h3 className="text-lg font-semibold mb-4">Update Category</h3>
 
         <form onSubmit={handleSubmit}>
           <div>
@@ -92,7 +95,10 @@ function UploadCategoryModel({fetchdata ,onclose }) {
                   !data.name ? "bg-gray-100" : "bg-blue-500"
                 } px-4 w-fit py-2 my-1 rounded-2xl cursor-pointer`}
               >
-                upload Image
+                {
+                  loading?("Loading"):("upload Image")
+                }
+                
               </div>
               <input
                 disabled={!data.name}
@@ -103,7 +109,7 @@ function UploadCategoryModel({fetchdata ,onclose }) {
               />
             </label>
           </div>
-          <button type="submit">{loading?"Loading":"Add Category"}</button>
+          <button className="border border-amber-600 p-2 rounded-2xl hover:bg-amber-300">{loading ? "Loading" : "Update Category"}</button>
         </form>
 
         <div className="flex justify-end">
@@ -119,4 +125,4 @@ function UploadCategoryModel({fetchdata ,onclose }) {
   );
 }
 
-export default UploadCategoryModel;
+export default EditCategory;
