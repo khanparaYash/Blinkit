@@ -4,7 +4,7 @@ import { Axios } from '../utils/Axios'
 import { SummaryApi } from '../common/SummaryApi'
 import toast from 'react-hot-toast'
 
-function ConfirmBox({fetchdata, dataEdit, onclose}) {
+function ConfirmBox({ dataEdit, onclose}) {
     const [deleteId,setDeletId]=useState({
         _id:dataEdit._id
     })
@@ -13,11 +13,10 @@ function ConfirmBox({fetchdata, dataEdit, onclose}) {
             ...SummaryApi.delete_category,
             data:deleteId
         })
-        console.log(deleteData);
         
         if(deleteData.data.success){
             toast.success(deleteData.data.message)
-            fetchdata()
+            
             onclose()
         }
     }

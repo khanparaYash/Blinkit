@@ -1,16 +1,18 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import { logout } from "../store/userSlice";
 import toast from "react-hot-toast";
 import { AxiosTostError } from "../utils/AxiosToastError";
 import { FiExternalLink } from "react-icons/fi";
+import isAdmin from "../utils/isAdmin";
 
 function UserMenu({ close }) {
   const user = useSelector((state) => state?.user);
   const dispatch = useDispatch();
+  const naviget = useNavigate();
 
   const handelLogOut = async () => {
     try {
@@ -18,10 +20,13 @@ function UserMenu({ close }) {
         ...SummaryApi.logout,
       });
       if (responce?.data?.success) {
-        close();
+        if (close) {
+          close();
+        }
         dispatch(logout());
         localStorage.clear();
         toast.success(responce.data.message);
+        naviget("/");
       }
     } catch (error) {
       AxiosTostError(error);
@@ -36,42 +41,45 @@ function UserMenu({ close }) {
     <div className="w-64 bg-white shadow-lg rounded-lg p-4 space-y-4 text-gray-700 text-sm">
       <div className="text-xl font-semibold  ">My Account</div>
       <div className="text-base text-gray-800 pb-2 border-b font-medium">
-        {user?.name || user?.mobile}{" "}
+        {user?.name || user?.mobile}{" "}{isAdmin(user.role)?("(Admin)"):("")}
         <Link onClick={handelCloseUserMenu} to={"/dashboard/profile"} size>
           <FiExternalLink size={18} />
         </Link>
       </div>
 
       <div className="flex flex-col gap-3 mt-2">
-        
-        <Link
-          onClick={handelCloseUserMenu}
-          to="/dashboard/category"
-          className="hover:text-blue-600 transition-colors duration-200"
-        >
-          Category
-        </Link>
-        <Link
-          onClick={handelCloseUserMenu}
-          to="/dashboard/sub-category"
-          className="hover:text-blue-600 transition-colors duration-200"
-        >
-          Sub Category
-        </Link>
-        <Link
-          onClick={handelCloseUserMenu}
-          to="/dashboard/upload-product"
-          className="hover:text-blue-600 transition-colors duration-200"
-        >
-          Upload Product
-        </Link>
-        <Link
-          onClick={handelCloseUserMenu}
-          to="/dashboard/product"
-          className="hover:text-blue-600 transition-colors duration-200"
-        >
-          Product
-        </Link>
+        {isAdmin(user.role) && (
+          <>
+            <Link
+              onClick={handelCloseUserMenu}
+              to="/dashboard/category"
+              className="hover:text-blue-600 transition-colors duration-200"
+            >
+              Category
+            </Link>
+            <Link
+              onClick={handelCloseUserMenu}
+              to="/dashboard/sub-category"
+              className="hover:text-blue-600 transition-colors duration-200"
+            >
+              Sub Category
+            </Link>
+            <Link
+              onClick={handelCloseUserMenu}
+              to="/dashboard/upload-product"
+              className="hover:text-blue-600 transition-colors duration-200"
+            >
+              Upload Product
+            </Link>
+            <Link
+              onClick={handelCloseUserMenu}
+              to="/dashboard/product"
+              className="hover:text-blue-600 transition-colors duration-200"
+            >
+              Product
+            </Link>
+          </>
+        )}
         <Link
           onClick={handelCloseUserMenu}
           to="/dashboard/myOrders"

@@ -33,9 +33,6 @@ function Profile() {
           {/* Status & role */}
           <div className="mt-2 text-sm text-gray-700">
             <p>
-              <span className="font-medium">Role:</span> {user?.role || "User"}
-            </p>
-            <p>
               <span className="font-medium">Email Verified:</span>{" "}
               {user?.verify_email ? (
                 <span className="text-green-600">Yes</span>

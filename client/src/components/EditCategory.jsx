@@ -4,14 +4,14 @@ import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import toast from "react-hot-toast";
 
-function EditCategory({fetchdata,dataEdit:edit, onclose }) {
+function EditCategory({dataEdit:edit, onclose }) {
   const [data, setData] = useState({
     _id:edit._id,
     name: edit.name,
     image: edit.image,
   });
-
   const [loading, setLoding] = useState(false);
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => {
@@ -36,7 +36,7 @@ function EditCategory({fetchdata,dataEdit:edit, onclose }) {
       if (responseData.success) {
         toast.success(response.data.message);
         onclose();
-        fetchdata();
+
       }
     } catch (error) {
       console.log(error);

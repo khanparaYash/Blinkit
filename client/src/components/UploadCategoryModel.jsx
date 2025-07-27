@@ -4,12 +4,13 @@ import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import toast from "react-hot-toast";
 
-function UploadCategoryModel({fetchdata ,onclose }) {
+function UploadCategoryModel({ onclose }) {
   const [data, setData] = useState({
     name: "",
     image: "",
   });
   const [loading, setLoding] = useState(false);
+ 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => {
@@ -30,10 +31,8 @@ function UploadCategoryModel({fetchdata ,onclose }) {
       });
       if (response.data.success) {
         toast.success(response.data.message);
-        fetchdata()
-        onclose()
-        console.log("asdfasdfs");
-        
+        // fetchdata()
+        onclose();
       }
     } catch (error) {
       console.log(error);
@@ -45,7 +44,7 @@ function UploadCategoryModel({fetchdata ,onclose }) {
   const handleUploadCategory = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    setLoding(true)
+    setLoding(true);
     const response = await uploadImage(file);
     const { data: ImageResponse } = response;
     setData((prev) => {
@@ -54,7 +53,7 @@ function UploadCategoryModel({fetchdata ,onclose }) {
         image: ImageResponse.data.url,
       };
     });
-    setLoding(false)
+    setLoding(false);
   };
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
@@ -86,6 +85,7 @@ function UploadCategoryModel({fetchdata ,onclose }) {
                 <p className="text-sm">No Image</p>
               )}
             </div>
+            
             <label htmlFor="uploadCategoryImage">
               <div
                 className={`${
@@ -103,7 +103,7 @@ function UploadCategoryModel({fetchdata ,onclose }) {
               />
             </label>
           </div>
-          <button type="submit">{loading?"Loading":"Add Category"}</button>
+          <button type="submit">{loading ? "Loading" : "Add Category"}</button>
         </form>
 
         <div className="flex justify-end">

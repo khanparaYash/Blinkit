@@ -4,41 +4,27 @@ import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import EditCategory from "../components/EditCategory";
 import ConfirmBox from "../components/ConfirmBox";
+import { useSelector } from "react-redux";
 
 function CategoryPage() {
-  const [openUploadCategory, setUploadCategory] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [openEdit ,setOpenEdit]=useState(false);
-  const [openConfirm ,setOpenConfirm]=useState(false);
-  const[editData,setEditData]=useState({
-    name:"",
-    image:""
-  })
+  const [editData, setEditData] = useState({
+    name: "",
+    image: "",
+  });
+  const [openUploadCategory, setUploadCategory] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false);
 
-  const fetchCategory = async () => {
-    try {
-      setLoading(true);
-      const response = await Axios({
-        ...SummaryApi.get_Category,
-      });
-      const { data: responseData } = response;
-      if (responseData.success) setData(responseData.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  const allCategory = useSelector((state) => state.product.allCategory);
   useEffect(() => {
-    fetchCategory();
-    
-    
-  }, []);
+    setLoading(true);
+    setData(allCategory);
+    setLoading(false);
+  }, [allCategory]);
 
   return (
-
     <section className="min-h-screen bg-gray-100 p-4 ">
       <div className="bg-white rounded-xl shadow mb-3 p-4 flex items-center justify-between">
         <h2 className="text-xl font-semibold text-gray-800">Category</h2>
@@ -57,8 +43,22 @@ function CategoryPage() {
               <img src={element.image} className="w-52 " alt="" />
               <h1>{element.name}</h1>
               <div className="flex items-center h-9">
-                <button onClick={()=>{setOpenEdit(prev=>!prev) ,setEditData(element)}} className="flex-1 hidden border group-hover:flex  bg-green-300">Edit</button>
-                <button onClick={()=>{setOpenConfirm(prev=>!prev) ,setEditData(element)}} className="flex-1 border hidden group-hover:flex ">Delete</button>
+                <button
+                  onClick={() => {
+                    setOpenEdit((prev) => !prev), setEditData(element);
+                  }}
+                  className="flex-1 hidden border group-hover:flex  bg-green-300"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => {
+                    setOpenConfirm((prev) => !prev), setEditData(element);
+                  }}
+                  className="flex-1 border hidden group-hover:flex "
+                >
+                  Delete
+                </button>
               </div>
             </div>
           );
@@ -67,17 +67,24 @@ function CategoryPage() {
 
       {openUploadCategory && (
         <UploadCategoryModel
-          fetchdata={fetchCategory}
+          // fetchdata={fetchCategory}
           onclose={() => setUploadCategory(false)}
         />
       )}
-      {
-        openEdit&&(<EditCategory fetchdata={fetchCategory} dataEdit={editData} onclose={()=>setOpenEdit(false)}/>)
-      }
-      {
-        openConfirm&&(<ConfirmBox fetchdata={fetchCategory} dataEdit={editData} onclose={()=>setOpenConfirm(false)}/>)
-      }
-      
+      {openEdit && (
+        <EditCategory
+          // fetchdata={fetchCategory}
+          dataEdit={editData}
+          onclose={() => setOpenEdit(false)}
+        />
+      )}
+      {openConfirm && (
+        <ConfirmBox
+          // fetchdata={fetchCategory}
+          dataEdit={editData}
+          onclose={() => setOpenConfirm(false)}
+        />
+      )}
     </section>
   );
 }
