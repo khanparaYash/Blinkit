@@ -4,21 +4,22 @@ import { Axios } from '../utils/Axios'
 import { SummaryApi } from '../common/SummaryApi'
 import toast from 'react-hot-toast'
 
-function ConfirmBox({ dataEdit, onclose}) {
-    const [deleteId,setDeletId]=useState({
-        _id:dataEdit._id
-    })
+function ConfirmBox({  onclose,handleOk}) {
+    
     const handelDelete=async ()=>{
-        const deleteData=await Axios({
-            ...SummaryApi.delete_category,
-            data:deleteId
-        })
+      
+       handleOk()
+      
+        // const deleteData=await Axios({
+        //     ...SummaryApi.delete_category,
+        //     data:deleteId
+        // })
         
-        if(deleteData.data.success){
-            toast.success(deleteData.data.message)
+        // if(deleteData.data.success){
+        //     toast.success(deleteData.data.message)
             
-            onclose()
-        }
+        //     onclose()
+        // }
     }
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">

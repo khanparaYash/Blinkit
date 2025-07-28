@@ -6,6 +6,8 @@ import { createColumnHelper } from "@tanstack/react-table";
 import SubCategoryTable from "./../components/SubCategoryTable";
 import ViewImage from "../components/ViewImage";
 import EditSubCategory from "../components/EditSubCategory";
+import ConfirmBox from "../components/ConfirmBox";
+import toast from "react-hot-toast";
 
 function SubCategory() {
   const [data, setData] = useState([]);
@@ -61,7 +63,9 @@ function SubCategory() {
             >
               edit
             </button>
-            <button>delete</button>
+            <button  onClick={() => {
+                setEditData(info.row.original), setOpenConfirm((prev) => !prev);
+              }}>delete</button>
           </div>
         );
       },
@@ -80,6 +84,17 @@ function SubCategory() {
     setLoading(false);
   };
 
+  const handleDeleteSubCategory=async()=>{
+    const response=await Axios({
+      ...SummaryApi.delete_sub_category,
+      data:editData
+    })
+    if(response.data.success){
+      toast.success(response.data.message)
+      setOpenConfirm(false)
+      fetchSubCAtegory();
+    }
+  }
   useEffect(() => {
     fetchSubCAtegory();
   }, []);
@@ -108,7 +123,7 @@ function SubCategory() {
           onclose={() => setOpenEdit(false)}
         />
       )}
-      {openConfirm && <ConfirmBox onclose={() => setOpenConfirm(false)} />}
+      {openConfirm && <ConfirmBox onclose={() => setOpenConfirm(false)} handleOk={()=>{handleDeleteSubCategory()}}/>}
       {ImageURl && <ViewImage url={ImageURl} close={() => setImageURl("")} />}
     </section>
   );

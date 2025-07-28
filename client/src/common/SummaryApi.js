@@ -69,4 +69,12 @@ export const SummaryApi = {
     url:"api/subCategory/update-subCategory",
     method:"put"
   },
+  delete_sub_category:{
+    url:"api/subCategory/delete-subCategory",
+    method:"delete"
+  },
+  add_product:{
+    url:"api/product/add-product",
+    method:"post"
+  },
 };

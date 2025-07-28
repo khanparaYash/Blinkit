@@ -7,7 +7,7 @@ function Dashboard() {
       <div className="w-64 bg-white shadow-md border-r">
         <UserMenu />
       </div>
-      <div className="flex-1  h-2/3 p-6">
+      <div className="flex-1  h-full overflow-scroll  p-6">
         <Outlet />
       </div>
     </div>

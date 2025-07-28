@@ -4,7 +4,10 @@ import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import EditCategory from "../components/EditCategory";
 import ConfirmBox from "../components/ConfirmBox";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import { AxiosTostError } from "../utils/AxiosToastError";
+import { removeCategory } from "../store/ProductSlice";
 
 function CategoryPage() {
   const [loading, setLoading] = useState(false);
@@ -16,14 +19,31 @@ function CategoryPage() {
   const [openUploadCategory, setUploadCategory] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
-
+const dispatch=useDispatch()
   const allCategory = useSelector((state) => state.product.allCategory);
+
   useEffect(() => {
     setLoading(true);
     setData(allCategory);
     setLoading(false);
   }, [allCategory]);
 
+  const handleDeleteCategory = async () => {
+    try {
+      const response = await Axios({
+      ...SummaryApi.delete_category,
+      data: editData,
+    });
+    if (response.data.success) {
+      toast.success(response.data.message);
+      dispatch(removeCategory(editData._id));
+      setOpenConfirm(false);
+    }
+  } catch (error) {
+    AxiosTostError(error)
+    setOpenConfirm(false);
+    }
+  };
   return (
     <section className="min-h-screen bg-gray-100 p-4 ">
       <div className="bg-white rounded-xl shadow mb-3 p-4 flex items-center justify-between">
@@ -67,21 +87,22 @@ function CategoryPage() {
 
       {openUploadCategory && (
         <UploadCategoryModel
-          // fetchdata={fetchCategory}
+          
           onclose={() => setUploadCategory(false)}
         />
       )}
       {openEdit && (
         <EditCategory
-          // fetchdata={fetchCategory}
+          
           dataEdit={editData}
           onclose={() => setOpenEdit(false)}
         />
       )}
       {openConfirm && (
         <ConfirmBox
-          // fetchdata={fetchCategory}
-          dataEdit={editData}
+          
+          
+          handleOk={()=>handleDeleteCategory()}
           onclose={() => setOpenConfirm(false)}
         />
       )}
