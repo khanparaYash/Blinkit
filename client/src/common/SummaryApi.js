@@ -77,4 +77,12 @@ export const SummaryApi = {
     url:"api/product/add-product",
     method:"post"
   },
+  get_product:{
+    url:"api/product/get-product",
+    method:"post"
+  },
+  get_productByCategory:{
+    url:"api/product/get-product-by-category",
+    method:"post"
+  },
 };

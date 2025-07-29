@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import AddFieldComponent from "../components/AddFieldComponent";
 import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import { AxiosTostError } from "../utils/AxiosToastError";
 import successAlert from "../utils/SuccessAlert";
 
@@ -96,21 +96,33 @@ function UploadProduct() {
     setOpenAddField(false);
   };
 
-  const handleSubmit=async(e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response=await Axios({
+      const response = await Axios({
         ...SummaryApi.add_product,
-        data:data
-      })
-      if(response.data.success){
-        successAlert(response.data.message)
+        data: data,
+      });
+      if (response.data.success) {
+        successAlert(response.data.message);
+        setData({
+          name: "",
+          image: [],
+          category: [],
+          subCategory: [],
+          unit: "",
+          stock: "",
+          price: "",
+          discount: "",
+          description: "",
+          more_details: {},
+        });
         // toast.success(response.data.message)
       }
     } catch (error) {
-      AxiosTostError(error)
+      AxiosTostError(error);
     }
-  }
+  };
   return (
     <>
       <div className="bg-white rounded-xl shadow mb-3 p-4 flex items-center justify-between">
@@ -364,18 +376,16 @@ function UploadProduct() {
                   <input
                     id={k}
                     type="text"
-                    
-                    
                     value={data?.more_details[k]}
-                    onChange={(e)=>{
-                      const value=e.target.value
-                      return{
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      return {
                         ...e,
-                        more_details:{
+                        more_details: {
                           ...e.more_details,
-                          [k]:value
-                        }
-                      }
+                          [k]: value,
+                        },
+                      };
                     }}
                     required
                     className="border-none bg-blue-50 p-3 w-full"
@@ -390,7 +400,7 @@ function UploadProduct() {
           >
             Add Fields
           </div>
-          <button >submit</button>
+          <button>submit</button>
         </form>
       </div>
       {viewImage && (

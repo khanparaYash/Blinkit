@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 const successAlert = (e) => {
   const alert=Swal.fire({
-    title: {e},
+    title: e,
     icon: "success",
     draggable: true,
   });

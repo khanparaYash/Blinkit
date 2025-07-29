@@ -16,6 +16,8 @@ import SubCategory from "../pages/SubCategory";
 import UploadProduct from "../pages/UploadProduct";
 import ProductAdmin from "../pages/ProductAdmin";
 import AdminPermision from "../layouts/AdminPermision";
+import ProductListPage from "../components/ProductListPage";
+import ProductDisplayPage from "../pages/ProductDisplayPage";
 
 
 const router=createBrowserRouter([
@@ -85,6 +87,19 @@ const router=createBrowserRouter([
                     },
                 ]
             },
+            {
+                path:":category",
+                children:[
+                    {
+                        path:":subCategory",
+                        element:<ProductListPage/>
+                    }
+                ]
+            },
+            {
+                path:"product/:product",
+                element:<ProductDisplayPage/>
+            }
         ]
     }
 ])
