@@ -85,4 +85,20 @@ export const SummaryApi = {
     url:"api/product/get-product-by-category",
     method:"post"
   },
+  get_productByCategory_SubCategory:{
+    url:"api/product/get-product-by-category-subCategory",
+    method:"post"
+  },
+  get_product_details:{
+    url:"api/product/get-product-Details",
+    method:"post"
+  },
+  update_product:{
+    url:"api/product/update-product",
+    method:"put"
+  },
+  delete_product:{
+    url:"api/product/delete-product",
+    method:"delete"
+  },
 };

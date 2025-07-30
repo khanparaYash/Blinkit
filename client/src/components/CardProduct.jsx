@@ -5,10 +5,12 @@ import { Link } from 'react-router-dom'
 function CardProduct({data}) {
     const url=`/product/${validURLConverter(data.name)}-${data._id}`
   return (
-    <Link to={url}>
+    <Link to={url} >
+      <div>
         <img src={data.image[0]} alt="" />
         <div>{data.name}</div>
         <button className='border'>add</button>
+        </div>
     </Link>
   )
 }

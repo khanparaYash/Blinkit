@@ -4,6 +4,7 @@ import { AxiosTostError } from "../utils/AxiosToastError";
 import { Axios } from "../utils/Axios";
 import ProductCardAdmin from "../components/ProductCardAdmin";
 function ProductAdmin() {
+
   const [productData, setProductData] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoding] = useState(false);
@@ -27,6 +28,7 @@ function ProductAdmin() {
       setLoding(false);
     }
   };
+
   useEffect(() => {
     fetchProductData();
   }, [page]);
@@ -48,15 +50,18 @@ function ProductAdmin() {
     if (page === totalPageCount) return;
     setPage((prev) => prev + 1);
   };
+
   const handlePrev = () => {
     if (page === 1) return;
     setPage((prev) => prev - 1);
   };
+
   const handleOnChange = (e) => {
     const { value } = e.target;
     setProductSearch(value);
     setPage(1);
   };
+
   return (
     <div>
       <div>
@@ -74,7 +79,7 @@ function ProductAdmin() {
         <div>Loding.....</div>
       ) : (
         productData.map((p, index) => {
-          return <ProductCardAdmin key={index} data={p} />;
+          return <ProductCardAdmin key={index} fetchProductData={fetchProductData} data={p} />;
         })
       )}
       <button
@@ -88,6 +93,7 @@ function ProductAdmin() {
         {page}/{totalPageCount}
       </button>
       <button onClick={() => handleNext()}>next</button>
+      
     </div>
   );
 }
