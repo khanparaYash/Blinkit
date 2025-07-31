@@ -10,6 +10,7 @@ import { setUserDetails } from "./store/userSlice";
 import { Axios } from "./utils/Axios";
 import { SummaryApi } from "./common/SummaryApi";
 import { setAllCategory, setLoadingCategory, setSubCategory } from "./store/ProductSlice";
+import GlobalProvider from "./provider/GlobalProvider";
 
 function App() {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ function App() {
     const user = await fetchUserDetails();
     dispatch(setUserDetails(user.data.data));
   };
+
   const fetchCategory = async () => {
     try {
       dispatch(setLoadingCategory(true))
@@ -34,6 +36,7 @@ function App() {
       dispatch(setLoadingCategory(false))
     }
   };
+
   const fetchSubCategory = async () => {
     try {
       const response = await Axios({
@@ -47,20 +50,22 @@ function App() {
     }
   };
 
+
   useEffect(() => {
     fetchUser();
     fetchCategory();
     fetchSubCategory();
+    
   }, []);
   return (
-    <>
+    <GlobalProvider>
       <Header />
       <main>
         <Outlet />
       </main>
       <Footer />
       <Toaster />
-    </>
+    </GlobalProvider>
   );
 }
 

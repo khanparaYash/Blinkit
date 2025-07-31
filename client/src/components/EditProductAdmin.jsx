@@ -11,16 +11,18 @@ import { AxiosTostError } from "../utils/AxiosToastError";
 import successAlert from "../utils/SuccessAlert";
 
 function EditProductAdmin({ onclose, oldData,fetchProductData }) {
+  console.log(oldData);
+  
   const [data, setData] = useState({
     name: oldData.name || "",
     image: oldData.image || [],
     category: oldData.category || [],
     subCategory: oldData.subCategory || [],
     unit: oldData.unit || "",
-    stock: oldData.stock || "",
-    price: oldData.price || "",
+    stock: oldData.stock ,
+    price: oldData.price ,
     discount: oldData.discount || "",
-    description: oldData.description || "",
+    description: oldData.description ,
     more_details: oldData.more_details || {},
   });
   const [viewImage, setViewImage] = useState("");

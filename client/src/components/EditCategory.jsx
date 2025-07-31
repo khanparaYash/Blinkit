@@ -11,7 +11,7 @@ function EditCategory({dataEdit:edit, onclose }) {
     image: edit.image,
   });
   const [loading, setLoding] = useState(false);
-
+ 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => {

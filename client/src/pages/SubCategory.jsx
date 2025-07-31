@@ -8,6 +8,8 @@ import ViewImage from "../components/ViewImage";
 import EditSubCategory from "../components/EditSubCategory";
 import ConfirmBox from "../components/ConfirmBox";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setSubCategory } from "../store/ProductSlice";
 
 function SubCategory() {
   const [data, setData] = useState([]);
@@ -71,7 +73,7 @@ function SubCategory() {
       },
     }),
   ];
-
+const dispatch=useDispatch()
   const fetchSubCAtegory = async () => {
     setLoading(true);
     const response = await Axios({
@@ -79,10 +81,11 @@ function SubCategory() {
     });
     if (response.data.success) {
       setData(response.data.data);
+      dispatch(setSubCategory(response.data?.data))
     }
-
     setLoading(false);
   };
+
 
   const handleDeleteSubCategory=async()=>{
     const response=await Axios({
@@ -114,7 +117,7 @@ function SubCategory() {
       <SubCategoryTable data={data} columns={columns} />
 
       {openUploadSubCategory && (
-        <UploadSubCategory onclose={() => setOpenUploadSubCategory(false)} />
+        <UploadSubCategory fetchSubCAtegory={fetchSubCAtegory} onclose={() => setOpenUploadSubCategory(false)} />
       )}
       {openEdit && (
         <EditSubCategory

@@ -35,6 +35,13 @@ export const AddProductController = async (req, res) => {
       name,
       image,
       category,
+      subCategory,
+      unit,
+      stock,
+      price,
+      discount,
+      description,
+      more_details,
     });
     const saveProduct = await addProduct.save();
     if (!saveProduct) {
@@ -218,8 +225,7 @@ export const searchProduct = async (req, res) => {
         }
       : {};
     const [data, dataCount] = await Promise.all([
-      productModel.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit),
-      populate("category subCategory"),
+      productModel.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).populate("category subCategory"),
       productModel.countDocuments(query),
     ]);
 
@@ -228,6 +234,7 @@ export const searchProduct = async (req, res) => {
       data: data,
       page: page,
       totalCount: dataCount,
+      totalPage:Math.ceil(dataCount/limit),
       limit: limit,
       success: true,
       error: false,

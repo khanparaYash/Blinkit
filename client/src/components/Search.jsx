@@ -7,7 +7,10 @@ export const Search = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isSearch, setIsSearch] = useState();
-
+  
+    // const queryParams = new URLSearchParams(location.search);
+     const searchText = location.search.slice(3)
+    // setIsSearch(searchText)
   useEffect(() => {
     setIsSearch(location.pathname === "/search");
   }, [location]);
@@ -15,7 +18,11 @@ export const Search = () => {
   const redirectToSearchPage = () => {
     navigate("/search");
   };
-
+const handleOnChange=(e)=>{
+  const value=e.target.value
+  const url=`/search?q=${value}`
+  navigate(url)
+}
   return (
     <div className="w-full sm:w-1/2">
       {!isSearch ? (
@@ -45,8 +52,10 @@ export const Search = () => {
         <input
           type="text"
           autoFocus
+          defaultValue={searchText}
           placeholder="Search products..."
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          onChange={handleOnChange}
         />
       )}
     </div>

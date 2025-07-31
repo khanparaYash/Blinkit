@@ -3,10 +3,11 @@ import { useParams } from "react-router-dom";
 import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import { AxiosTostError } from "../utils/AxiosToastError";
+import AddToCart from "../components/AddToCart";
 
 function ProductDisplayPage() {
   const params = useParams();
-  let productId = params.product.split("-").slice(-1)[0];
+  let productId = params?.product?.split("-").slice(-1)[0];
   const [product, setProduct] = useState({});
   const [image, setImage] = useState(0);
 // console.log(product);
@@ -40,8 +41,8 @@ function ProductDisplayPage() {
           }
         </div>
       </div>
-      <div>Price:{product.price}</div>
-      <button>add</button>
+      <div>Price:{product?.price}</div>
+      <AddToCart data={product}/>
     </section>
   );
 }

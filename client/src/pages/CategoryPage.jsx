@@ -7,7 +7,7 @@ import ConfirmBox from "../components/ConfirmBox";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { AxiosTostError } from "../utils/AxiosToastError";
-import { removeCategory } from "../store/ProductSlice";
+import { removeCategory, setAllCategory, setLoadingCategory } from "../store/ProductSlice";
 
 function CategoryPage() {
   const [loading, setLoading] = useState(false);
@@ -20,13 +20,30 @@ function CategoryPage() {
   const [openEdit, setOpenEdit] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
 const dispatch=useDispatch()
-  const allCategory = useSelector((state) => state.product.allCategory);
+  const allCategory = useSelector((state) => state?.product?.allCategory);
 
   useEffect(() => {
     setLoading(true);
     setData(allCategory);
     setLoading(false);
   }, [allCategory]);
+
+  const fetchCategory = async () => {
+      try {
+        dispatch(setLoadingCategory(true))
+        const response = await Axios({
+          ...SummaryApi.get_Category,
+        });
+        const { data: responseData } = response;
+        
+        if (responseData?.success) dispatch(setAllCategory(responseData?.data));
+  
+      } catch (error) {
+        console.log(error);
+      }finally{
+        dispatch(setLoadingCategory(false))
+      }
+    };
 
   const handleDeleteCategory = async () => {
     try {
@@ -87,7 +104,7 @@ const dispatch=useDispatch()
 
       {openUploadCategory && (
         <UploadCategoryModel
-          
+          fetchCategory={fetchCategory}
           onclose={() => setUploadCategory(false)}
         />
       )}

@@ -4,7 +4,7 @@ import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import toast from "react-hot-toast";
 
-function UploadCategoryModel({ onclose }) {
+function UploadCategoryModel({ onclose,fetchCategory }) {
   const [data, setData] = useState({
     name: "",
     image: "",
@@ -31,7 +31,7 @@ function UploadCategoryModel({ onclose }) {
       });
       if (response.data.success) {
         toast.success(response.data.message);
-        // fetchdata()
+        fetchCategory()
         onclose();
       }
     } catch (error) {

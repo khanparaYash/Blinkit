@@ -1,5 +1,5 @@
 import React from "react";
-import banner from "../assets/react.svg";
+import banner from "../assets/banner.jpg";
 import { useSelector } from "react-redux";
 import { validURLConverter } from "../utils/validURlConvert";
 import { Link, useNavigate } from "react-router-dom";

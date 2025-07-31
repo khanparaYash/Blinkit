@@ -52,7 +52,7 @@ function UploadProduct() {
     setData((prev) => {
       return {
         ...prev,
-        image: [...prev.image, response.data.data.url],
+        image: [...prev.image, response?.data?.data?.url],
       };
     });
     setLoading(false);
@@ -376,17 +376,35 @@ function UploadProduct() {
                   <input
                     id={k}
                     type="text"
+                    name={k}
                     value={data?.more_details[k]}
-                    onChange={(e) => {
+                     onChange={(e) => {
                       const value = e.target.value;
-                      return {
-                        ...e,
+                      setData((prev) => ({
+                        ...prev,
                         more_details: {
-                          ...e.more_details,
+                          ...prev.more_details,
                           [k]: value,
                         },
-                      };
-                    }}
+                      }));
+                      }}
+                    // onChange={(e) => {
+                      // const value = e.target?.value;
+                      // setData((e)=>{
+                      //   ...e,
+                      //   e.more_details: {
+                      //     ...e.more_details,
+                      //     [k]: value,
+                      //   },
+                      // })
+                      // return {
+                      //   ...e,
+                      //   more_details: {
+                      //     ...e.more_details,
+                      //     [k]: value,
+                      //   },
+                      // };
+                    // }}
                     required
                     className="border-none bg-blue-50 p-3 w-full"
                   />

@@ -101,4 +101,24 @@ export const SummaryApi = {
     url:"api/product/delete-product",
     method:"delete"
   },
+  search_product:{
+    url:"api/product/search-product",
+    method:"post"
+  },
+  add_to_cart:{
+    url:"api/cart/add-cart",
+    method:"post"
+  }, 
+  get_cart:{
+    url:"api/cart/get-cart",
+    method:"get"
+  },
+  update_qty_cart:{
+    url:"api/cart/update-qty-cart",
+    method:"put"
+  },
+  delete_item_cart:{
+    url:"api/cart/delete-cart",
+    method:"delete"
+  },
 };
