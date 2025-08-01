@@ -1,16 +1,22 @@
-import React from 'react'
+import React from "react";
+import { IoClose } from 'react-icons/io5'
 
-function ViewImage({url,close}) {
+
+function ViewImage({ url, close }) {
   return (
-    <div className='fixed top-18  bottom-0 right-0 left-0 w-full  bg-neutral-600/50'>
-        <div className='cursor-pointer border w-fit bg-amber-500' onClick={()=>close()}>
-            close
+    <div className="fixed top-0 bottom-0 right-0 left-0 bg-neutral-900/70 flex justify-center items-center z-50 p-4">
+      <div className="w-full max-w-md max-h-[80vh] p-4 bg-white">
+        <div className="w-fit ml-auto block" onClick={() => close()}>
+          <IoClose size={25} />
         </div>
-        <div className='w-full max-w-md p-4'>
-            <img src={url} alt="" />
-        </div>
+        <img
+          src={url}
+          alt="full screen"
+          className="w-full h-full object-scale-down"
+        />
+      </div>
     </div>
-  )
+  );
 }
 
-export default ViewImage
+export default ViewImage;

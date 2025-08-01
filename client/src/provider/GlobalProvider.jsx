@@ -16,7 +16,8 @@ const GlobalProvider = ({ children }) => {
   const dispatch = useDispatch();
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQty, setTotalQty] = useState(0);
-    const cartItem=useSelector(state=>state?.cart?.cart)
+  const cartItem = useSelector((state) => state?.cart?.cart);
+
   const fetchCartItem = async () => {
     try {
       const response = await Axios({
@@ -58,25 +59,31 @@ const GlobalProvider = ({ children }) => {
       AxiosTostError(error);
     }
   };
-   useEffect(()=>{
-      const Qty=cartItem?.reduce((prev,curr)=>{
-        return  prev+curr.quantity
-      },0)
-      setTotalQty(Qty)
+  useEffect(() => {
+    const Qty = cartItem?.reduce((prev, curr) => {
+      return prev + curr.quantity;
+    }, 0);
+    setTotalQty(Qty);
+
+    const tPrice = cartItem.reduce((prev, curr) => {
+      return prev + curr.productId?.price * curr.quantity;
+    }, 0);
+    setTotalPrice(tPrice);
+  }, [cartItem]);
   
-      const tPrice=cartItem.reduce((prev,curr)=>{
-        return prev+(curr.productId?.price*curr.quantity)
-      },0)
-      setTotalPrice(tPrice)
-  
-    },[cartItem])
   useEffect(() => {
     fetchCartItem();
   }, []);
 
   return (
     <GlobalContext.Provider
-      value={{ fetchCartItem, updateCartItem, deleteCartItem,totalPrice,totalQty }}
+      value={{
+        fetchCartItem,
+        updateCartItem,
+        deleteCartItem,
+        totalPrice,
+        totalQty,
+      }}
     >
       {children}
     </GlobalContext.Provider>

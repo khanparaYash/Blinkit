@@ -1,11 +1,13 @@
-import React, {  useState } from "react";
-import { FaShoppingCart, FaUser } from "react-icons/fa";
+import React, { useState } from "react";
 import { Search } from "./Search";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FaAngleDown } from "react-icons/fa";
 import { FaAngleUp } from "react-icons/fa";
 import UserMenu from "./UserMenu";
+import { FaRegCircleUser } from "react-icons/fa6";
+import { BsCart4 } from "react-icons/bs";
+import DisplayCartItem from "./DisplayCartItem.jsx";
 import { useGlobalContext } from "../provider/GlobalProvider";
 import logo from "../assets/logo.png";
 import useMobile from "../hooks/useMobile";
@@ -16,8 +18,9 @@ function Header() {
   const isSearchPage = location.pathname === "/search";
   const user = useSelector((state) => state?.user);
   const [openUserMenu, setOpenUserMenu] = useState(false);
+  const [OpenCartSection, setOpenCartSection] = useState(false);
   const { totalQty, totalPrice } = useGlobalContext();
-
+  const cartItem = useSelector((state) => state.cart.cart);
   const handelCloseUserMenu = () => {
     setOpenUserMenu(false);
   };
@@ -48,57 +51,88 @@ function Header() {
 
           {/* Search Bar */}
           <div className="hidden lg:block">
-          <Search />
+            <Search />
           </div>
 
           {/* Login & Cart */}
-          <div className="flex items-center gap-6 text-gray-700 text-lg">
-            {user?._id ? (
-              <div className="relative">
-                <div
-                  className="flex items-center gap-2 select-none cursor-pointer group"
-                  onClick={() => setOpenUserMenu((prev) => !prev)}
-                >
-                  <p className="group-hover:text-blue-600 transition-colors">
-                    Account
-                  </p>
-                  {openUserMenu ? (
-                    <FaAngleUp className="group-hover:text-blue-600 transition-colors" />
-                  ) : (
-                    <FaAngleDown className="group-hover:text-blue-600 transition-colors" />
+          <div>
+            {/* for mobile */}
+            <button
+              onClick={() => {
+                if (!user._id) {
+                  navigate("/login");
+                  return;
+                }
+
+                navigate("/user");
+              }}
+              title="Login"
+              className="text-neutral-600 lg:hidden"
+            >
+              <FaRegCircleUser size={26} />
+            </button>
+            {/* desktop */}
+            <div className="hidden lg:flex  items-center gap-10">
+              {user?._id ? (
+                <div className="relative">
+                  <div
+                    className="flex select-none items-center gap-1 cursor-pointer"
+                    onClick={() => setOpenUserMenu((prev) => !prev)}
+                  >
+                    <p>Account</p>
+                    {openUserMenu ? (
+                      <FaAngleUp size={25} />
+                    ) : (
+                      <FaAngleDown size={25} />
+                    )}
+                  </div>
+
+                  {openUserMenu && (
+                    <div className="absolute right-0 top-12">
+                      <div className="bg-white rounded p-4 min-w-52 lg:shadow-lg">
+                        <UserMenu close={handelCloseUserMenu} />
+                      </div>
+                    </div>
                   )}
                 </div>
-
-                {openUserMenu && (
-                  <div className="absolute right-0 mt-2 z-50">
-                    <UserMenu close={handelCloseUserMenu} />
-                  </div>
-                )}
-              </div>
-            ) : (
-              <button
-                onClick={() => navigate("/login")}
-                title="Login"
-                className="hover:text-blue-600 transition-colors"
-              >
-                <FaUser className="text-xl" />
-              </button>
-            )}
-
-            <div className="relative">
-              <button
-                title="Cart"
-                className="hover:text-blue-600 transition-colors relative"
-              >
-                {totalPrice}
-                <FaShoppingCart className="text-xl" />
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {totalQty}
-                </span>
-              </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                  className="text-lg px-2"
+                >
+                  Login
+                </button>
+              )}
             </div>
           </div>
+          {/**add to card icons */}
+          <button
+            onClick={() => setOpenCartSection(true)}
+            className="flex items-center gap-2 bg-green-800 hover:bg-green-700 px-3 py-2 rounded text-white"
+          >
+            <div className="animate-bounce">
+              <BsCart4 size={26} />
+            </div>
+            <div className="font-semibold text-sm">
+              {cartItem[0] ? (
+                <div>
+                  <p>{totalQty} Items</p>
+                  <p>{totalPrice}</p>
+                </div>
+              ) : (
+                <p>My Cart</p>
+              )}
+            </div>
+          </button>
         </div>
+      )}
+      <div className="container mx-auto px-2 lg:hidden">
+        <Search />
+      </div>
+      {OpenCartSection && (
+        <DisplayCartItem close={() => setOpenCartSection(false)} />
       )}
     </header>
   );

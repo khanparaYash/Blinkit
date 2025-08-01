@@ -6,6 +6,7 @@ import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import toast from "react-hot-toast";
 import { AxiosTostError } from "../utils/AxiosToastError";
+import { IoClose } from "react-icons/io5";
 
 function UploadSubCategory({ fetchSubCAtegory, onclose }) {
   const [data, setData] = useState({
@@ -14,7 +15,7 @@ function UploadSubCategory({ fetchSubCAtegory, onclose }) {
     category: [],
   });
   const [loading, setLoading] = useState(false);
-  const allCategory = useSelector((state) => state.product.allCategory);
+  const allCategory = useSelector((state) => state?.product?.allCategory);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,18 +30,19 @@ function UploadSubCategory({ fetchSubCAtegory, onclose }) {
     try {
       const file = e.target.files[0];
 
-    if (!file) return;
-    setLoading(true);
-    const response = await uploadImage(file);
-    setData((prev) => {
-      return {
-        ...prev,
-        image: response.data.data.url,
-      };
-    });
-    setLoading(false);
+      if (!file) return;
+      setLoading(true);
+      const response = await uploadImage(file);
+      setData((prev) => {
+        return {
+          ...prev,
+          image: response.data.data.url,
+        };
+      });
     } catch (error) {
-      AxiosTostError(error)
+      AxiosTostError(error);
+    } finally {
+      setLoading(false);
     }
   };
   const handleRemoveCategorySelected = (categoryId) => {
@@ -52,28 +54,35 @@ function UploadSubCategory({ fetchSubCAtegory, onclose }) {
   const handleSubmitSubCategory = async (e) => {
     e.preventDefault();
     try {
+      loading(true);
       const response = await Axios({
         ...SummaryApi.add_sub_category,
         data,
       });
-      console.log(response);
 
       if (response.data.success) {
         toast.success(response.data.message);
-        fetchSubCAtegory();
+        if (fetchSubCAtegory) fetchSubCAtegory();
         if (onclose) onclose();
       }
     } catch (error) {
       AxiosTostError(error);
+    } finally {
+      loading(false);
     }
   };
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg">
-        <h3 className="text-lg font-semibold mb-4">Sub Category</h3>
+    <section className="fixed top-0 right-0 bottom-0 left-0 bg-neutral-800/70 z-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-5xl bg-white p-4 rounded">
+        <div className="flex items-center justify-between gap-3">
+          <h1 className="text-lg font-semibold mb-4">Add Sub Category</h1>
+          <button onClick={onclose} className="cursor-pointer">
+            <IoClose size={25} />
+          </button>
+        </div>
 
-        <form onSubmit={handleSubmitSubCategory}>
-          <div>
+        <form className="my-3 grid gap-3" onSubmit={handleSubmitSubCategory}>
+          <div className="grid gap-1">
             <label id="categoryName">Name</label>
             <input
               type="text"
@@ -82,27 +91,26 @@ function UploadSubCategory({ fetchSubCAtegory, onclose }) {
               value={data.name}
               onChange={handleChange}
               name="name"
+              className="p-3 bg-blue-50 border outline-none focus-within:border-primary-200 rounded "
             />
           </div>
-          <div>
+          <div className="grid gap-1">
             <p>Image</p>
-            <div className="border bg-blue-50 h-36 w-36 flex items-center justify-center">
-              {data.image ? (
-                <img
-                  src={data.image}
-                  alt=""
-                  className="w-full h-full  object-scale-down"
-                />
-              ) : (
-                <p className="text-sm">No Image</p>
-              )}
+            <div className="flex flex-col lg:flex-row items-center gap-3">
+              <div className="border h-36 w-full lg:w-36 bg-blue-50 flex items-center justify-center">
+                {data.image ? (
+                  <img
+                    src={data.image}
+                    alt=""
+                    className="w-full h-full  object-scale-down"
+                  />
+                ) : (
+                  <p className="text-sm text-neutral-400">No Image</p>
+                )}
+              </div>
             </div>
             <label htmlFor="uploadSubCategoryImage">
-              <div
-                className={`${
-                  !data.name ? "bg-gray-100" : "bg-blue-500"
-                } px-4 w-fit py-2 my-1 rounded-2xl cursor-pointer`}
-              >
+              <div className="px-4 py-1 border border-primary-100 text-primary-200 rounded hover:bg-primary-200 hover:text-neutral-900 cursor-pointer  ">
                 upload Image
               </div>
               <input
@@ -114,77 +122,73 @@ function UploadSubCategory({ fetchSubCAtegory, onclose }) {
               />
             </label>
           </div>
-          <div>
-            <div className="flex">
-              {/* display category */}
-              {data.category.map((e) => {
-                return (
-                  <div className="flex ">
-                    <p key={e._id}>{e.name}</p>
-                    <div
-                      className="text-center cursor-pointer"
-                      onClick={() => handleRemoveCategorySelected(e._id)}
-                    >
-                      <IoMdClose />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* select category */}
+          <div className="grid gap-1">
             <label>Select Category</label>
-            <select
-              className="bg-blue-50 border p-2"
-              onChange={(e) => {
-                const value = e.target.value;
-                const categoryDetails = allCategory.find(
-                  (el) => el._id == value
-                );
-                setData((prev) => {
-                  // if(prev.category.find((el)=>el._id==categoryDetails?._id))return
-                  return {
-                    ...prev,
-                    category: [...prev.category, categoryDetails],
-                  };
-                });
-              }}
-            >
-              <option value="" disabled selected>
-                Select Category
-              </option>
+            <div className="border focus-within:border-primary-200 rounded">
+              {/* display category */}
+              <div className="flex flex-wrap gap-2">
+                {data.category.map((e) => {
+                  return (
+                    <p
+                      key={e._id}
+                      className="bg-white shadow-md px-1 m-1 flex items-center gap-2"
+                    >
+                      {e.name}
+                      <div
+                        className="cursor-pointer hover:text-red-600"
+                        onClick={() => handleRemoveCategorySelected(e._id)}
+                      >
+                        <IoMdClose size={20} />
+                      </div>
+                    </p>
+                  );
+                })}
+              </div>
+              {/* select category */}
+              <select
+                className="w-full p-2 bg-transparent outline-none border"
+                onChange={(e) => {
+                  const value = e.target.value;
+                  const categoryDetails = allCategory.find(
+                    (el) => el._id == value
+                  );
+                  setData((prev) => {
+                    // if(prev.category.find((el)=>el._id==categoryDetails?._id))return
+                    return {
+                      ...prev,
+                      category: [...prev.category, categoryDetails],
+                    };
+                  });
+                }}
+              >
+                <option value="" disabled selected>
+                  Select Category
+                </option>
 
-              {allCategory.map((category, index) => {
-                return (
-                  <option value={category._id} key={category._id + index}>
-                    {category?.name}
-                  </option>
-                );
-              })}
-            </select>
+                {allCategory.map((category, index) => {
+                  return (
+                    <option value={category._id} key={category._id + index}>
+                      {category?.name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
           </div>
+
           <button
             type="submit"
-            className={`${
-              data.name && data.image && data.category[0]
-                ? "bg-amber-400"
-                : "bg-gray-500"
-            }`}
+            className={`px-4 py-2 border${
+              data?.name && data?.image && data?.category[0]
+                ? "bg-amber-400 hover:bg-amber-200"
+                : "bg-gray-200"
+            }font-semibold`}
           >
             {loading ? "Loading" : "Add Sub Category"}
           </button>
         </form>
-
-        <div className="flex justify-end">
-          <button
-            onClick={onclose}
-            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-          >
-            Cancel
-          </button>
-        </div>
       </div>
-    </div>
+    </section>
   );
 }
 

@@ -12,21 +12,21 @@ import isAdmin from "../utils/isAdmin";
 function UserMenu({ close }) {
   const user = useSelector((state) => state?.user);
   const dispatch = useDispatch();
-  const naviget = useNavigate();
+  const navigate = useNavigate();
 
   const handelLogOut = async () => {
     try {
-      const responce = await Axios({
+      const response = await Axios({
         ...SummaryApi.logout,
       });
-      if (responce?.data?.success) {
+      if (response?.data?.success) {
         if (close) {
           close();
         }
         dispatch(logout());
         localStorage.clear();
-        toast.success(responce.data.message);
-        naviget("/");
+        toast.success(response.data.message);
+        navigate("/");
       }
     } catch (error) {
       AxiosTostError(error);
@@ -38,43 +38,45 @@ function UserMenu({ close }) {
     }
   };
   return (
-    <div className="w-64 bg-white shadow-lg rounded-lg p-4 space-y-4 text-gray-700 text-sm">
-      <div className="text-xl font-semibold  ">My Account</div>
-      <div className="text-base text-gray-800 pb-2 border-b font-medium">
-        {user?.name || user?.mobile}{" "}{isAdmin(user.role)?("(Admin)"):("")}
-        <Link onClick={handelCloseUserMenu} to={"/dashboard/profile"} size>
-          <FiExternalLink size={18} />
-        </Link>
+    <div>
+      <div className=" font-semibold  ">My Account</div>
+      <div className="max-w-52 text-ellipsis line-clamp-1 flex items-center gap-2 justify-self-start">
+        <span className="text-base text-gray-800 pb-2 w-full border-b font-medium">
+          {user?.name || user?.mobile} {isAdmin(user.role) ? "(Admin)" : ""}
+        </span>
+          <Link  className='hover:text-amber-400 ' onClick={handelCloseUserMenu} to={"/dashboard/profile"} size>
+            <FiExternalLink size={18} />
+          </Link>
       </div>
 
-      <div className="flex flex-col gap-3 mt-2">
+      <div className="text-sm grid gap-1">
         {isAdmin(user.role) && (
           <>
             <Link
               onClick={handelCloseUserMenu}
               to="/dashboard/category"
-              className="hover:text-blue-600 transition-colors duration-200"
+              className="px-2 hover:bg-orange-200 py-1"
             >
               Category
             </Link>
             <Link
               onClick={handelCloseUserMenu}
               to="/dashboard/sub-category"
-              className="hover:text-blue-600 transition-colors duration-200"
+              className="px-2 hover:bg-orange-200 py-1"
             >
               Sub Category
             </Link>
             <Link
               onClick={handelCloseUserMenu}
               to="/dashboard/upload-product"
-              className="hover:text-blue-600 transition-colors duration-200"
+              className="px-2 hover:bg-orange-200 py-1"
             >
               Upload Product
             </Link>
             <Link
               onClick={handelCloseUserMenu}
               to="/dashboard/product"
-              className="hover:text-blue-600 transition-colors duration-200"
+              className="px-2 hover:bg-orange-200 py-1"
             >
               Product
             </Link>
@@ -83,20 +85,20 @@ function UserMenu({ close }) {
         <Link
           onClick={handelCloseUserMenu}
           to="/dashboard/myOrders"
-          className="hover:text-blue-600 transition-colors duration-200"
+          className="px-2 hover:bg-orange-200 py-1"
         >
           My Orders
         </Link>
         <Link
           onClick={handelCloseUserMenu}
           to="/dashboard/address"
-          className="hover:text-blue-600 transition-colors duration-200"
+          className="px-2 hover:bg-orange-200 py-1"
         >
           Saved Address
         </Link>
         <button
           onClick={handelLogOut}
-          className="text-left text-red-500 hover:text-red-600 transition-colors duration-200"
+          className="text-left  px-2 hover:bg-orange-200 py-1"
         >
           Logout
         </button>
