@@ -6,7 +6,7 @@ function ViewImage({ url, close }) {
   return (
     <div className="fixed top-0 bottom-0 right-0 left-0 bg-neutral-900/70 flex justify-center items-center z-50 p-4">
       <div className="w-full max-w-md max-h-[80vh] p-4 bg-white">
-        <div className="w-fit ml-auto block" onClick={() => close()}>
+        <div className="w-fit ml-auto block cursor-pointer" onClick={() => close()}>
           <IoClose size={25} />
         </div>
         <img

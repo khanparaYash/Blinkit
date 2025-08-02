@@ -9,7 +9,7 @@ import { AxiosTostError } from "../utils/AxiosToastError";
 
 function Register() {
   const [passwordshow, setPasswordshow] = useState(false);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const [data, setData] = useState({
     name: "",
@@ -28,89 +28,80 @@ function Register() {
     });
   };
 
-  const valideValue=()=>Object.values(data).every(el=>el)
+  const valideValue = () => Object.values(data).every((el) => el);
 
-  const handleSubmit=async(e)=>{
-    e.preventDefault()
-    if(data.password!==data.confirmPassword){
-      toast.error("Password and conform Password must be same")
-      return
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (data.password !== data.confirmPassword) {
+      toast.error("Password and conform Password must be same");
+      return;
     }
     try {
-      const response=await Axios({
+      const response = await Axios({
         ...SummaryApi.register,
-        data:data
+        data: data,
       });
-      
-      if(response.data.success){
-        toast.success(response.data.message)
+
+      if (response.data.success) {
+        toast.success(response.data.message);
         setData({
-          name:"",
-          email:"",
-          password:"",
-          confirmPassword:""
-        })
-        navigate("/login")
+          name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        });
+        navigate("/login");
       }
     } catch (error) {
-      AxiosTostError(error)
+      AxiosTostError(error);
     }
-    
-  }
+  };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
-        <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-          Create Account
-        </h2>
+    <section className="w-full container mx-auto px-2">
+      <div className="bg-white my-4 w-full max-w-lg mx-auto rounded p-7">
+        <p>Welcome to Blinkeyit</p>
 
-        <form className="space-y-5" onSubmit={handleSubmit}>
-          <div>
-            <label className="block mb-1 text-sm font-medium text-gray-700">
-              Name
-            </label>
+        <form className="grid gap-4 mt-6" onSubmit={handleSubmit}>
+          <div className="grid gap-1">
+            <label>Name</label>
             <input
               type="text"
               autoFocus
               placeholder="Enter your name"
-              className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-blue-50 p-2 border rounded outline-none focus:border-primary-200"
               name="name"
               value={data.name}
               onChange={handleChange}
             />
           </div>
 
-          <div>
-            <label  className="block mb-1 text-sm font-medium text-gray-700">
-              Email
-            </label>
+          <div className="grid gap-1">
+            <label>Email</label>
             <input
               type="email"
               placeholder="Enter your email"
-              className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-blue-50 p-2 border rounded outline-none focus:border-primary-200"
               name="email"
               value={data.email}
               onChange={handleChange}
             />
           </div>
 
-          <div>
-            <label className="block mb-1 text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <div className="relative">
+          <div className="grid gap-1">
+            <label>Password</label>
+            <div className="bg-blue-50 p-2 border rounded flex items-center focus-within:border-primary-200">
               <input
                 type={passwordshow ? "text" : "password"}
                 placeholder="Create a password"
-                className="w-full px-4 py-2 border rounded-xl pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full outline-none"
                 name="password"
                 value={data.password}
                 onChange={handleChange}
               />
               <div
                 onClick={() => setPasswordshow((prev) => !prev)}
-                className="absolute inset-y-0 right-3 flex items-center text-gray-600 cursor-pointer"
+                className="cursor-pointer"
               >
                 {passwordshow ? (
                   <IoMdEye size={20} />
@@ -121,22 +112,20 @@ function Register() {
             </div>
           </div>
 
-          <div>
-            <label className="block mb-1 text-sm font-medium text-gray-700">
-              confirm Password
-            </label>
-            <div className="relative">
+          <div className="grid gap-1">
+            <label>confirm Password</label>
+            <div className="bg-blue-50 p-2 border rounded flex items-center focus-within:border-primary-200">
               <input
                 type={passwordshow ? "text" : "password"}
                 placeholder="enter conform password"
-                className="w-full px-4 py-2 border rounded-xl pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full outline-none"
                 name="confirmPassword"
                 value={data.confirmPassword}
                 onChange={handleChange}
               />
               <div
                 onClick={() => setPasswordshow((prev) => !prev)}
-                className="absolute inset-y-0 right-3 flex items-center text-gray-600 cursor-pointer"
+                className=" cursor-pointer"
               >
                 {passwordshow ? (
                   <IoMdEye size={20} />
@@ -147,23 +136,28 @@ function Register() {
             </div>
           </div>
 
-          <button 
-          disabled={!valideValue()}
+          <button
+            disabled={!valideValue()}
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-xl font-semibold hover:bg-blue-700 transition"
+            className={` ${
+              valideValue() ? "bg-green-800 hover:bg-green-700" : "bg-gray-500"
+            }    text-white py-2 rounded font-semibold my-3 tracking-wide`}
           >
             Register
           </button>
         </form>
 
-        <p className="mt-6 text-sm text-center text-gray-600">
-          Already have an account?{" "}
-          <Link to={"/login"} className="text-blue-600 hover:underline">
+        <p>
+          Already have account ?{" "}
+          <Link
+            to={"/login"}
+            className="font-semibold text-green-700 hover:text-green-800"
+          >
             Login
           </Link>
         </p>
       </div>
-    </div>
+    </section>
   );
 }
 

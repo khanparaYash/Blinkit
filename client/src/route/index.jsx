@@ -18,6 +18,7 @@ import ProductAdmin from "../pages/ProductAdmin";
 import AdminPermision from "../layouts/AdminPermision";
 import ProductListPage from "../pages/ProductListPage";
 import ProductDisplayPage from "../pages/ProductDisplayPage";
+import UserMenuMobile from "../pages/UserMenuMobile";
 
 
 const router=createBrowserRouter([
@@ -86,6 +87,10 @@ const router=createBrowserRouter([
                         element:<AdminPermision><ProductAdmin/></AdminPermision>
                     },
                 ]
+            },
+            {
+                path:"user",
+                element:<UserMenuMobile/>
             },
             {
                 path:":category",

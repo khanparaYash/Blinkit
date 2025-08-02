@@ -58,43 +58,43 @@ function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
-        <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
+    <section className="w-full container mx-auto px-2">
+      <div className="bg-white my-4 w-full max-w-lg mx-auto rounded p-7">
+        {/* <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
           Login Account
-        </h2>
+        </h2> */}
 
-        <form className="space-y-5" onSubmit={handleSubmit}>
-          <div>
+        <form className="grid gap-4 py-4" onSubmit={handleSubmit}>
+          <div className="grid gap-1">
             <label className="block mb-1 text-sm font-medium text-gray-700">
               Email
             </label>
             <input
               type="email"
               placeholder="Enter your email"
-              className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-blue-50 p-2 border rounded outline-none focus:border-primary-200"
               name="email"
               value={data.email}
               onChange={handleChange}
             />
           </div>
 
-          <div>
+          <div className="grid gap-1">
             <label className="block mb-1 text-sm font-medium text-gray-700">
               Password
             </label>
-            <div className="relative">
+            <div className="bg-blue-50 p-2 border rounded flex items-center focus-within:border-primary-200">
               <input
                 type={passwordshow ? "text" : "password"}
                 placeholder="Create a password"
-                className="w-full px-4 py-2 border rounded-xl pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full outline-none"
                 name="password"
                 value={data.password}
                 onChange={handleChange}
               />
               <div
                 onClick={() => setPasswordshow((prev) => !prev)}
-                className="absolute inset-y-0 right-3 flex items-center text-gray-600 cursor-pointer"
+                className=" cursor-pointer"
               >
                 {passwordshow ? (
                   <IoMdEye size={20} />
@@ -103,34 +103,36 @@ function Login() {
                 )}
               </div>
             </div>
-            <p className="  text-sm text-gray-600">
-              Forgot password?{" "}
-              <Link
-                to={"/forgot-password"}
-                className="text-blue-600 hover:underline"
-              >
-                click me!
-              </Link>
-            </p>
+            <Link
+              to={"/forgot-password"}
+              className="block ml-auto hover:text-primary-200"
+            >
+              Forgot password ?
+            </Link>
           </div>
 
           <button
             disabled={!valideValue()}
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-xl font-semibold hover:bg-blue-700 transition"
+            className={` ${
+              valideValue() ? "bg-green-800 hover:bg-green-700" : "bg-gray-500"
+            }    text-white py-2 rounded font-semibold my-3 tracking-wide`}
           >
             Login
           </button>
         </form>
 
-        <p className="mt-6 text-sm text-center text-gray-600">
-          Don't have an account?{" "}
-          <Link to={"/register"} className="text-blue-600 hover:underline">
+        <p>
+          Don't have account?{" "}
+          <Link
+            to={"/register"}
+            className="font-semibold text-green-700 hover:text-green-800"
+          >
             Register
           </Link>
         </p>
       </div>
-    </div>
+    </section>
   );
 }
 

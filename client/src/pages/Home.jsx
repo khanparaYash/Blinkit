@@ -1,5 +1,6 @@
 import React from "react";
 import banner from "../assets/banner.jpg";
+import bannerMobile from"../assets/banner-mobile.jpg"
 import { useSelector } from "react-redux";
 import { validURLConverter } from "../utils/validURlConvert";
 import { Link, useNavigate } from "react-router-dom";
@@ -31,46 +32,51 @@ function Home() {
           }`}
         >
           <img src={banner} alt="" className="w-full h-full hidden lg:block" />
-          <img src={banner} alt="" className="w-full h-full  lg:hidden" />
-        </div>
-
-        <div className="container mx-auto px-4 my-2 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {loadingCategory
-            ? new Array(12).fill(null).map((c, index) => {
-                return (
-                  <div key={index} className="bg-white rounded-2xl p-4 min-h-40 grid gap-2 shadow animate-pulse">
-                    <div className="bg-blue-100 min-h-24 rounded-2xl"></div>
-                    <div className="bg-blue-100 h-8 rounded-2xl"></div>
-                  </div>
-                );
-              })
-            : categoryData.map((c, index) => {
-                return (
-                  <div key={index}
-                    onClick={() => {
-                      handleRedirectProductListPage(c._id, c.name);
-                    }}
-                  >
-                    <img src={c.image} alt="" />
-                    <div>{c.name}</div>
-                  </div>
-                );
-              })}
-        </div>
-
-        {/* display category products */}
-        <div >
-          {categoryData.map((c, index) => {
-            return (
-              <CategoryVWiseProductDisplay
-                key={index}
-                id={c?._id}
-                name={c?.name}
-              />
-            );
-          })}
+          <img src={bannerMobile} alt="" className="w-full h-full  lg:hidden" />
         </div>
       </div>
+
+      <div className="container mx-auto px-4 my-2 grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10  gap-2">
+        {loadingCategory
+          ? new Array(12).fill(null).map((c, index) => {
+              return (
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl p-4 min-h-40 grid gap-2 shadow animate-pulse"
+                >
+                  <div className="bg-blue-100 min-h-24 rounded-2xl"></div>
+                  <div className="bg-blue-100 h-8 rounded-2xl"></div>
+                </div>
+              );
+            })
+          : categoryData.map((c, index) => {
+              return (
+                <div
+                  key={index}
+                  onClick={() => {
+                    handleRedirectProductListPage(c._id, c.name);
+                  }}
+                  className="w-full h-full"
+                >
+                  <img src={c.image} alt="" className="w-full h-full object-scale-down"/>
+                  
+                </div>
+              );
+            })}
+      </div>
+
+      {/* display category products */}
+      
+        {categoryData.map((c, index) => {
+          return (
+            <CategoryVWiseProductDisplay
+              key={index}
+              id={c?._id}
+              name={c?.name}
+            />
+          );
+        })}
+      
     </section>
   );
 }

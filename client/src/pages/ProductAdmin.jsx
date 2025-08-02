@@ -3,8 +3,8 @@ import { SummaryApi } from "../common/SummaryApi";
 import { AxiosTostError } from "../utils/AxiosToastError";
 import { Axios } from "../utils/Axios";
 import ProductCardAdmin from "../components/ProductCardAdmin";
+import { IoSearchOutline } from "react-icons/io5";
 function ProductAdmin() {
-
   const [productData, setProductData] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoding] = useState(false);
@@ -20,7 +20,7 @@ function ProductAdmin() {
       });
       if (response.data.success) {
         setProductData(response.data.data);
-        setTotalPageCount(response.data.totalCount);
+        setTotalPageCount(response.data.totalNoPage);
       }
     } catch (error) {
       AxiosTostError(error);
@@ -35,15 +35,15 @@ function ProductAdmin() {
 
   useEffect(() => {
     let flag = true;
-    const interval=setTimeout(() => {
+    const interval = setTimeout(() => {
       if (flag) {
         fetchProductData();
         flag = false;
       }
     }, 300);
-    return()=>{
-      clearInterval(interval)
-    }
+    return () => {
+      clearInterval(interval);
+    };
   }, [productSearch]);
 
   const handleNext = () => {
@@ -63,38 +63,52 @@ function ProductAdmin() {
   };
 
   return (
-    <div>
-      <div>
-        <h2>Product</h2>
-        <div>
+    <section>
+      <div className="p-2  bg-white shadow-md flex items-center justify-between gap-4">
+        <h2 className="font-semibold">Product</h2>
+        <div className="h-full min-w-24 max-w-56 w-full ml-auto bg-blue-50 px-4 flex items-center gap-3 py-2 rounded  border focus-within:border-primary-200">
+          <IoSearchOutline size={25} />
           <input
             type="text"
             placeholder="Search Product Hear..."
             onChange={handleOnChange}
             value={productSearch}
+            className="h-full w-full  outline-none bg-transparent"
           />
         </div>
       </div>
-      {loading ? (
-        <div>Loding.....</div>
-      ) : (
-        productData.map((p, index) => {
-          return <ProductCardAdmin key={index} fetchProductData={fetchProductData} data={p} />;
-        })
-      )}
-      <button
-        onClick={() => {
-          handlePrev();
-        }}
-      >
-        prev
-      </button>
-      <button>
-        {page}/{totalPageCount}
-      </button>
-      <button onClick={() => handleNext()}>next</button>
-      
-    </div>
+
+      {loading ?? <div>Loading.....</div>}
+
+      <div className="p-4 bg-blue-50">
+        <div className="min-h-[55vh]">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {productData.map((p, index) => {
+              return (
+                <ProductCardAdmin
+                  key={index}
+                  fetchProductData={fetchProductData}
+                  data={p}
+                />
+              );
+            })}
+          </div>
+        </div>
+        <div className="flex justify-between my-4">
+          <button className="border border-primary-200 px-4 py-1 hover:bg-primary-200"
+            onClick={() => {
+              handlePrev();
+            }}
+          >
+            prev
+          </button>
+          <button className="w-full bg-slate-100">
+            {page}/{totalPageCount}
+          </button>
+          <button onClick={() => handleNext()} className="border border-primary-200 px-4 py-1 hover:bg-primary-200">next</button>
+        </div>
+      </div>
+    </section>
   );
 }
 

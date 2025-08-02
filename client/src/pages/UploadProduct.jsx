@@ -124,15 +124,15 @@ function UploadProduct() {
     }
   };
   return (
-    <>
-      <div className="bg-white rounded-xl shadow mb-3 p-4 flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-gray-800">add Product</h2>
+    <section className="md:w-2xl lg:w-2xl">
+      <div className="p-2   bg-white shadow-md flex items-center justify-between">
+        <h2 className="font-semibold">Upload Product</h2>
       </div>
-      <div>
-        <form onSubmit={handleSubmit}>
+      <div className="grid p-3">
+        <form className="grid gap-4 " onSubmit={handleSubmit}>
           {/* name */}
-          <div className="flex flex-col">
-            <label htmlFor="name" className="w-full">
+          <div className="grid gap-1">
+            <label htmlFor="name" className="font-medium">
               Name
             </label>
             <input
@@ -143,12 +143,12 @@ function UploadProduct() {
               value={data.name}
               onChange={handleChange}
               required
-              className="border-none bg-blue-50 p-3 w-full"
+              className="bg-blue-50 p-2 outline-none border focus-within:border-amber-200 rounded"
             />
           </div>
           {/* description */}
-          <div className="flex flex-col">
-            <label htmlFor="description" className="w-full">
+          <div className="grid gap-1">
+            <label htmlFor="description" className="font-medium">
               description
             </label>
             <textarea
@@ -160,38 +160,45 @@ function UploadProduct() {
               onChange={handleChange}
               required
               rows={3}
-              className="border-none bg-blue-50 p-3 w-full"
+              className="bg-blue-50 p-2 outline-none border focus-within:border-amber-200 rounded resize-none"
             />
           </div>
           {/* image */}
-          <div className="mt-2 bg-blue-50">
-            <p>Image</p>
-            <label
-              htmlFor="productImage"
-              className="border bg-blue-500 min-h-4 cursor-pointer"
-            >
-              <div className="text-center flex justify-center h-full items-center">
-                {loading ? "Loading" : <p>upload Image</p>}
-              </div>
-              <input
-                type="file"
-                id="productImage"
-                className="hidden"
-                onChange={handleUploadImage}
-              />
-            </label>
-            <div className="flex gap-1 ">
+          <div>
+            <p className="font-medium">Image</p>
+            <div>
+              <label
+                htmlFor="productImage"
+                className="bg-blue-50 h-24 border rounded flex justify-center items-center cursor-pointer"
+              >
+                <div className="text-center flex justify-center h-full items-center">
+                  {loading ? "Loading" : <p>upload Image</p>}
+                </div>
+                <input
+                  type="file"
+                  id="productImage"
+                  className="hidden"
+                  onChange={handleUploadImage}
+                />
+              </label>
+            </div>
+
+            <div className="flex flex-wrap gap-4 ">
               {data.image.map((img, index) => {
                 return (
                   <div
                     onClick={() => setViewImage(img)}
                     key={index}
-                    className="cursor-pointer relative group"
+                    className="h-20 mt-1 w-20 min-w-20 bg-blue-50 border relative group"
                   >
-                    <img src={img} alt="" className="max-h-4 " />
+                    <img
+                      src={img}
+                      alt=""
+                      className="w-full h-full object-scale-down cursor-pointer"
+                    />
                     <div
                       onClick={() => handleDelete(index)}
-                      className="absolute bottom-0 right-0 bg-red-400 rounded hidden group-hover:block cursor-pointer"
+                      className="absolute bottom-0 right-0 p-1 bg-red-600 hover:bg-red-600 rounded text-white hidden group-hover:block cursor-pointer"
                     >
                       <MdDelete />
                     </div>
@@ -201,10 +208,11 @@ function UploadProduct() {
             </div>
           </div>
           {/* category */}
-          <div className="flex flex-col">
-            <p>Category</p>
+          <div className="grid gap-1">
+              <label className='font-medium'>Category</label>
             <div className="mt-2 bg-blue-50">
               <select
+              className='bg-blue-50 border w-full p-2 rounded'
                 value={selectCategory}
                 onChange={(e) => {
                   const value = e.target.value;
@@ -227,16 +235,16 @@ function UploadProduct() {
                   );
                 })}
               </select>
-              <div className="flex gap-3">
+              <div className='flex flex-wrap gap-3'>
                 {data.category.map((c, index) => {
                   return (
                     <div
                       key={c._id + index}
-                      className="flex  items-center gap-1"
+                      className="text-sm flex items-center gap-1 bg-blue-50 mt-2"
                     >
                       <p>{c.name}</p>{" "}
                       <div
-                        className="cursor-pointer"
+                        className="hover:text-red-500 cursor-pointer"
                         onClick={() => {
                           handleRemoveCategory(index);
                         }}
@@ -250,10 +258,11 @@ function UploadProduct() {
             </div>
           </div>
           {/* subcategory */}
-          <div className="flex flex-col">
-            <p>sub Category</p>
-            <div className="mt-2 bg-blue-50">
+          <div className="grid gap-1">
+             <label className='font-medium'>Sub Category</label>
+            <div >
               <select
+              className="bg-blue-50 border w-full p-2 rounded"
                 value={selectSubCategory}
                 onChange={(e) => {
                   const value = e.target.value;
@@ -269,7 +278,7 @@ function UploadProduct() {
                   setSelectSubCategory("");
                 }}
               >
-                <option value="">select</option>
+                <option value="" className="text-neutral-600">select</option>
                 {allSubCategory.map((c, index) => {
                   return (
                     <option key={index} value={c?._id}>
@@ -279,16 +288,16 @@ function UploadProduct() {
                 })}
               </select>
 
-              <div className="flex gap-3">
+              <div className="flex flex-wrap gap-3">
                 {data.subCategory.map((c, index) => {
                   return (
                     <div
                       key={c._id + index}
-                      className="flex  items-center gap-1"
+                      className="text-sm flex items-center gap-1 bg-blue-50 mt-2"
                     >
                       <p>{c.name}</p>{" "}
                       <div
-                        className="cursor-pointer"
+                        className="hover:text-red-500 cursor-pointer"
                         onClick={() => {
                           handleRemoveSubCategory(index);
                         }}
@@ -302,8 +311,8 @@ function UploadProduct() {
             </div>
           </div>
           {/* unit */}
-          <div className="flex flex-col">
-            <label htmlFor="unit" className="w-full">
+          <div className="grid gap-1">
+            <label htmlFor="unit" className="font-medium">
               Unit
             </label>
             <input
@@ -314,12 +323,12 @@ function UploadProduct() {
               value={data.unit}
               onChange={handleChange}
               required
-              className="border-none bg-blue-50 p-3 w-full"
+              className="bg-blue-50 p-2 outline-none border focus-within:border-amber-200 rounded"
             />
           </div>
           {/* stock */}
-          <div className="flex flex-col">
-            <label htmlFor="stock" className="w-full">
+          <div className="grid gap-1">
+            <label htmlFor="stock" className="font-medium">
               stock
             </label>
             <input
@@ -327,42 +336,50 @@ function UploadProduct() {
               type="Number"
               placeholder="Enter stock"
               name="stock"
+               onWheel={(e) => e.target.blur()}
+              inputMode="numeric"
+             
               value={data.stock}
               onChange={handleChange}
               required
-              className="border-none bg-blue-50 p-3 w-full"
+              className="bg-blue-50 p-2 outline-none border focus-within:border-amber-300 rounded"
             />
           </div>
           {/* price */}
-          <div className="flex flex-col">
-            <label htmlFor="price" className="w-full">
+          <div className="grid gap-1">
+            <label htmlFor="price" className="font-medium">
               price
             </label>
             <input
               id="price"
-              type="Number"
+              type="number"
+              onWheel={(e) => e.target.blur()}
+              inputMode="numeric"
               placeholder="Enter price"
               name="price"
               value={data.price}
               onChange={handleChange}
               required
-              className="border-none bg-blue-50 p-3 w-full"
+              className="bg-blue-50 p-2 outline-none border focus-within:border-amber-300 rounded"
             />
           </div>
           {/* discount */}
-          <div className="flex flex-col">
-            <label htmlFor="discount" className="w-full">
+          <div className="grid gap-1">
+            <label htmlFor="discount" className="font-medium">
               discount
             </label>
             <input
               id="discount"
               type="Number"
+               onWheel={(e) => e.target.blur()}
+              inputMode="numeric"
+             
               placeholder="Enter discount"
               name="discount"
               value={data.discount}
               onChange={handleChange}
               required
-              className="border-none bg-blue-50 p-3 w-full"
+              className="bg-blue-50 p-2 outline-none border focus-within:border-amber-200 rounded"
             />
           </div>
           {/* add more field */}
@@ -370,7 +387,7 @@ function UploadProduct() {
             {Object?.keys(data?.more_details)?.map((k) => {
               return (
                 <div className="flex flex-col">
-                  <label htmlFor={k} className="w-full">
+                  <label htmlFor={k} className="font-medium">
                     {k}
                   </label>
                   <input
@@ -378,7 +395,8 @@ function UploadProduct() {
                     type="text"
                     name={k}
                     value={data?.more_details[k]}
-                     onChange={(e) => {
+                    className="bg-blue-50 p-2 outline-none border focus-within:border-amber-200 rounded"
+                    onChange={(e) => {
                       const value = e.target.value;
                       setData((prev) => ({
                         ...prev,
@@ -387,26 +405,26 @@ function UploadProduct() {
                           [k]: value,
                         },
                       }));
-                      }}
+                    }}
                     // onChange={(e) => {
-                      // const value = e.target?.value;
-                      // setData((e)=>{
-                      //   ...e,
-                      //   e.more_details: {
-                      //     ...e.more_details,
-                      //     [k]: value,
-                      //   },
-                      // })
-                      // return {
-                      //   ...e,
-                      //   more_details: {
-                      //     ...e.more_details,
-                      //     [k]: value,
-                      //   },
-                      // };
+                    // const value = e.target?.value;
+                    // setData((e)=>{
+                    //   ...e,
+                    //   e.more_details: {
+                    //     ...e.more_details,
+                    //     [k]: value,
+                    //   },
+                    // })
+                    // return {
+                    //   ...e,
+                    //   more_details: {
+                    //     ...e.more_details,
+                    //     [k]: value,
+                    //   },
+                    // };
                     // }}
                     required
-                    className="border-none bg-blue-50 p-3 w-full"
+                    
                   />
                 </div>
               );
@@ -414,11 +432,11 @@ function UploadProduct() {
           </div>
           <div
             onClick={() => setOpenAddField(true)}
-            className="bg-amber-300 mt-2 cursor-pointer py-2 px-3"
+            className="hover:bg-amber-300 bg-white py-1 px-3 w-32 text-center font-semibold border border-amber-300 hover:text-neutral-900 cursor-pointer rounded"
           >
             Add Fields
           </div>
-          <button>submit</button>
+          <button className="bg-amber-300 hover:bg-amber-400 py-2 rounded font-semibold">submit</button>
         </form>
       </div>
       {viewImage && (
@@ -439,7 +457,7 @@ function UploadProduct() {
           submit={handleAddField}
         />
       )}
-    </>
+    </section>
   );
 }
 

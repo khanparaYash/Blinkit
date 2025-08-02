@@ -15,15 +15,18 @@ function AddToCart({ data }) {
   const [qty, setQty] = useState(0);
   const [cartItemDetails,setCartItemDetails]=useState()
  const [loading,setLoading]=useState(false)
+
   useEffect(() => {
     const checkingItem = cartItem.some(
       (item) => item.productId._id === data._id
     );
+    
     setIsAvailable(checkingItem);
+    
     const product = cartItem.find((item) => item.productId._id === data._id);
     setQty(product?.quantity);
     setCartItemDetails(product)
-  },[]);
+  },[cartItem,data]);
 
   const handleAddToCard = async (e) => {
     e.preventDefault();
@@ -62,9 +65,9 @@ function AddToCart({ data }) {
     updateCartItem(cartItemDetails?._id,qty+1)
   };
   return (
-    <div className='w-full max-w-[150px]'>
+    <div className='w-full flex  max-w-[150px]'>
       {isAvailable ? (
-        <div>
+        <div className="flex gap-1">
           <button onClick={decreaseQty} className='bg-green-600 hover:bg-green-700 text-white flex-1 w-full p-1 rounded flex items-center justify-center'>
             {" "}
             <FaMinus />

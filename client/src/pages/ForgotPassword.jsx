@@ -42,21 +42,17 @@ function ForgotPassword() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
-        <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-          Forgot Password
-        </h2>
+    <section className="w-full container mx-auto px-2">
+      <div className="bg-white my-4 w-full max-w-lg mx-auto rounded p-7">
+        <p className="font-semibold text-lg">Forgot Password </p>
 
-        <form className="space-y-5" onSubmit={handleSubmit}>
-          <div>
-            <label className="block mb-1 text-sm font-medium text-gray-700">
-              Email
-            </label>
+        <form className="grid gap-4 py-4" onSubmit={handleSubmit}>
+          <div className="grid gap-1">
+            <label>Email</label>
             <input
               type="email"
               placeholder="Enter your email"
-              className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-blue-50 p-2 border rounded outline-none focus:border-primary-200"
               name="email"
               value={data.email}
               onChange={handleChange}
@@ -66,20 +62,25 @@ function ForgotPassword() {
           <button
             disabled={!valideValue()}
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-xl font-semibold hover:bg-blue-700 transition"
+            className={` ${
+              valideValue() ? "bg-green-800 hover:bg-green-700" : "bg-gray-500"
+            }    text-white py-2 rounded font-semibold my-3 tracking-wide`}
           >
             Generate OTP
           </button>
         </form>
 
-        <p className="mt-6 text-sm text-center text-gray-600">
-          Remembed password?{" "}
-          <Link to={"/login"} className="text-blue-600 hover:underline">
+        <p>
+          Remember Password?{" "}
+          <Link
+            to={"/login"}
+            className="font-semibold text-green-700 hover:text-green-800"
+          >
             Login
           </Link>
         </p>
       </div>
-    </div>
+    </section>
   );
 }
 

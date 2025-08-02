@@ -161,6 +161,7 @@ export const getProductByCategoryAndSubCategory = async (req, res) => {
       productModel.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit),
       productModel.countDocuments(query),
     ]);
+    
 
     return res.json({
       message: " product list",
@@ -219,9 +220,10 @@ export const searchProduct = async (req, res) => {
     const skip = (page - 1) * limit;
     const query = search
       ? {
-          $text: {
-            $search: search,
-          },
+           $or: [
+        { name: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ],
         }
       : {};
     const [data, dataCount] = await Promise.all([

@@ -10,6 +10,9 @@ import ConfirmBox from "../components/ConfirmBox";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setSubCategory } from "../store/ProductSlice";
+import { LuPencil } from "react-icons/lu";
+import { MdDelete } from "react-icons/md";
+import { HiPencil } from "react-icons/hi";
 
 function SubCategory() {
   const [data, setData] = useState([]);
@@ -57,23 +60,30 @@ function SubCategory() {
       header: "Action",
       cell: (info) => {
         return (
-          <div className="flex gap-1">
+          <div className="flex items-center justify-center gap-3">
             <button
+              className="p-2 bg-green-100 rounded-full hover:text-green-600"
               onClick={() => {
                 setEditData(info.row.original), setOpenEdit((prev) => !prev);
               }}
             >
-              edit
+              <HiPencil size={20} />
             </button>
-            <button  onClick={() => {
+            <button
+              onClick={() => {
                 setEditData(info.row.original), setOpenConfirm((prev) => !prev);
-              }}>delete</button>
+              }}
+              className="p-2 bg-red-100 rounded-full text-red-500 hover:text-red-400"
+            >
+              {" "}
+              <MdDelete size={20} />
+            </button>
           </div>
         );
       },
     }),
   ];
-const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const fetchSubCAtegory = async () => {
     setLoading(true);
     const response = await Axios({
@@ -81,43 +91,46 @@ const dispatch=useDispatch()
     });
     if (response.data.success) {
       setData(response.data.data);
-      dispatch(setSubCategory(response.data?.data))
+      dispatch(setSubCategory(response.data?.data));
     }
     setLoading(false);
   };
 
-
-  const handleDeleteSubCategory=async()=>{
-    const response=await Axios({
+  const handleDeleteSubCategory = async () => {
+    const response = await Axios({
       ...SummaryApi.delete_sub_category,
-      data:editData
-    })
-    if(response.data.success){
-      toast.success(response.data.message)
-      setOpenConfirm(false)
+      data: editData,
+    });
+    if (response.data.success) {
+      toast.success(response.data.message);
+      setOpenConfirm(false);
       fetchSubCAtegory();
     }
-  }
+  };
   useEffect(() => {
     fetchSubCAtegory();
   }, []);
 
   return (
-    <section className="min-h-screen bg-gray-100 p-4 ">
-      <div className="bg-white rounded-xl shadow mb-3 p-4 flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-gray-800">Category</h2>
+    <section className=" ">
+      <div className="p-2   bg-white shadow-md flex items-center justify-between">
+        <h2 className="font-semibold">Sub Category</h2>
         <button
           onClick={() => setOpenUploadSubCategory((pre) => !pre)}
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+          className="text-sm border border-amber-300 hover:bg-amber-300 px-3 py-1 rounded"
         >
           Add Sub Category
         </button>
       </div>
-      {!data[0] && !loading && <p>No data</p>}
-      <SubCategoryTable data={data} columns={columns} />
-
+      <div className='overflow-auto w-full max-w-[95vw]'>
+        {!data[0] && !loading && <p>No data</p>}
+        <SubCategoryTable data={data} columns={columns} />
+      </div >
       {openUploadSubCategory && (
-        <UploadSubCategory fetchSubCAtegory={fetchSubCAtegory} onclose={() => setOpenUploadSubCategory(false)} />
+        <UploadSubCategory
+          fetchSubCAtegory={fetchSubCAtegory}
+          onclose={() => setOpenUploadSubCategory(false)}
+        />
       )}
       {openEdit && (
         <EditSubCategory
@@ -126,7 +139,14 @@ const dispatch=useDispatch()
           onclose={() => setOpenEdit(false)}
         />
       )}
-      {openConfirm && <ConfirmBox onclose={() => setOpenConfirm(false)} handleOk={()=>{handleDeleteSubCategory()}}/>}
+      {openConfirm && (
+        <ConfirmBox
+          onclose={() => setOpenConfirm(false)}
+          handleOk={() => {
+            handleDeleteSubCategory();
+          }}
+        />
+      )}
       {ImageURl && <ViewImage url={ImageURl} close={() => setImageURl("")} />}
     </section>
   );

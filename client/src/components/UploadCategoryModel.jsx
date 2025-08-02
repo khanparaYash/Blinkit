@@ -3,14 +3,15 @@ import uploadImage from "../utils/Uploadimage";
 import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import toast from "react-hot-toast";
+import { IoClose } from "react-icons/io5";
 
-function UploadCategoryModel({ onclose,fetchCategory }) {
+function UploadCategoryModel({ onclose, fetchCategory }) {
   const [data, setData] = useState({
     name: "",
     image: "",
   });
   const [loading, setLoding] = useState(false);
- 
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => {
@@ -31,7 +32,7 @@ function UploadCategoryModel({ onclose,fetchCategory }) {
       });
       if (response.data.success) {
         toast.success(response.data.message);
-        fetchCategory()
+        fetchCategory();
         onclose();
       }
     } catch (error) {
@@ -56,12 +57,20 @@ function UploadCategoryModel({ onclose,fetchCategory }) {
     setLoding(false);
   };
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg">
-        <h3 className="text-lg font-semibold mb-4">Add New Category</h3>
+    <section className="fixed top-0 bottom-0 left-0 right-0 p-4 bg-neutral-800/60 flex items-center justify-center">
+      <div className="bg-white max-w-4xl w-full p-4 rounded">
+        <div className="flex items-center justify-between">
+          <h1 className="font-semibold">Category</h1>
+          <button
+            onClick={onclose}
+            className="w-fit block ml-auto cursor-pointer"
+          >
+            <IoClose size={25} />
+          </button>
+        </div>
 
-        <form onSubmit={handleSubmit}>
-          <div>
+        <form className="my-3 grid gap-2" onSubmit={handleSubmit}>
+          <div className="grid gap-1">
             <label id="categoryName">Name</label>
             <input
               type="text"
@@ -70,52 +79,53 @@ function UploadCategoryModel({ onclose,fetchCategory }) {
               value={data.name}
               name="name"
               onChange={handleOnChange}
+              className="bg-blue-50 p-2 border border-blue-100 focus-within:border-primary-200 outline-none rounded"
             />
           </div>
-          <div>
+          <div className="grid gap-1">
             <p>Image</p>
-            <div className="border bg-blue-50 h-36 w-36 flex items-center justify-center">
-              {data.image ? (
-                <img
-                  src={data.image}
-                  alt=""
-                  className="w-full h-full  object-scale-down"
-                />
-              ) : (
-                <p className="text-sm">No Image</p>
-              )}
-            </div>
-            
-            <label htmlFor="uploadCategoryImage">
-              <div
-                className={`${
-                  !data.name ? "bg-gray-100" : "bg-blue-500"
-                } px-4 w-fit py-2 my-1 rounded-2xl cursor-pointer`}
-              >
-                upload Image
+            <div className="flex gap-4 flex-col lg:flex-row items-center">
+              <div className="border bg-blue-50 h-36 w-full lg:w-36 flex items-center justify-center rounded">
+                {data.image ? (
+                  <img
+                    src={data.image}
+                    alt=""
+                    className='w-full h-full object-scale-down'
+                  />
+                ) : (
+                  <p className="text-sm text-neutral-500">No Image</p>
+                )}
               </div>
-              <input
-                disabled={!data.name}
-                onChange={handleUploadCategory}
-                type="file"
-                className="hidden"
-                id="uploadCategoryImage"
-              />
-            </label>
+
+              <label htmlFor="uploadCategoryImage">
+                <div
+                  className={`
+                            ${!data.name ? "bg-gray-300" : "border-primary-200 hover:bg-primary-100" }  
+                                px-4 py-2 rounded cursor-pointer border font-medium
+                            `}
+                >
+                  upload Image
+                </div>
+                <input
+                  disabled={!data.name}
+                  onChange={handleUploadCategory}
+                  type="file"
+                  className="hidden"
+                  id="uploadCategoryImage"
+                />
+              </label>
+            </div>
           </div>
-          <button type="submit">{loading ? "Loading" : "Add Category"}</button>
+          <button className={`
+                    ${data.name && data.image ? "bg-primary-200 hover:bg-primary-100" : "bg-gray-300 "}
+                    py-2    
+                    font-semibold 
+                    `} type="submit">{loading ? "Loading" : "Add Category"}</button>
         </form>
 
-        <div className="flex justify-end">
-          <button
-            onClick={onclose}
-            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-          >
-            Cancel
-          </button>
-        </div>
+        
       </div>
-    </div>
+    </section>
   );
 }
 

@@ -7,20 +7,20 @@ function Profile() {
   const user = useSelector((state) => state.user);
   const [openAvatarEdit,setOpenAvatarEdit]=useState(false);
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-md mt-6">
+    <div className="max-w-4xl mx-auto mt-5 p-6 bg-white rounded-xl shadow-md ">
       <div className="flex items-center gap-6">
         {/* Avatar */}
-        <div >
+        <div className="w-20 h-20">
           {user?.avatar ? (
             <img
               src={user?.avatar}
               alt="avatar"
-              className="w-20 min-h-20 rounded-full border object-cover"
+              className=" w-full h-full rounded-full border object-cover"
             />
           ) : (
-            <CgProfile className="w-24 h-24 rounded-full  object-cover" />
+            <CgProfile className="rounded-full  object-cover" />
           )}
-          <button onClick={()=>{setOpenAvatarEdit(prev=>!prev)}} className="px-4  w-full rounded-2xl py-1  my-3 bg-blue-600 text-white rounded hover:bg-blue-700">
+          <button onClick={()=>{setOpenAvatarEdit(prev=>!prev)}} className="px-4  w-full rounded-2xl py-1  my-3 bg-green-700 text-white rounded hover:bg-green-800">
             edit
           </button>
         </div>
@@ -42,7 +42,7 @@ function Profile() {
             </p>
             <p>
               <span className="font-medium">Last Login:</span>{" "}
-              {user?.last_login_date || "N/A"}
+              { new Date(user?.last_login_date).toLocaleString() || "N/A"}
             </p>
             <p>
               <span className="font-medium">Status:</span>{" "}
@@ -52,18 +52,20 @@ function Profile() {
 
           {/* Buttons */}
           <div className="mt-4 flex gap-3">
-            <Link
-              to="/dashboard/profile/edit"
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
+            <div
+              onClick={()=>{""}}
+              
+              className="cursor-not-allowed  px-4 py-2 bg-green-700 text-white rounded hover:bg-green-800"
+              >
               Edit Profile
-            </Link>
-            <Link
-              to="/dashboard/profile/change-password"
-              className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+            </div>
+            <div
+              onClick={()=>{""}}
+              
+              className="cursor-not-allowed px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
             >
               Change Password
-            </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -91,7 +91,7 @@ function UploadSubCategory({ fetchSubCAtegory, onclose }) {
               value={data.name}
               onChange={handleChange}
               name="name"
-              className="p-3 bg-blue-50 border outline-none focus-within:border-primary-200 rounded "
+              className="p-3 bg-blue-50 border outline-none focus-within:border-amber-200 rounded "
             />
           </div>
           <div className="grid gap-1">
@@ -110,7 +110,7 @@ function UploadSubCategory({ fetchSubCAtegory, onclose }) {
               </div>
             </div>
             <label htmlFor="uploadSubCategoryImage">
-              <div className="px-4 py-1 border border-primary-100 text-primary-200 rounded hover:bg-primary-200 hover:text-neutral-900 cursor-pointer  ">
+              <div className="px-4 py-1 border border-amber-400 text-amber-400 w-fit rounded hover:bg-amber-300 hover:text-neutral-900 cursor-pointer  ">
                 upload Image
               </div>
               <input
@@ -122,9 +122,10 @@ function UploadSubCategory({ fetchSubCAtegory, onclose }) {
               />
             </label>
           </div>
+
           <div className="grid gap-1">
             <label>Select Category</label>
-            <div className="border focus-within:border-primary-200 rounded">
+            <div className="border focus-within:border-amber-200 rounded">
               {/* display category */}
               <div className="flex flex-wrap gap-2">
                 {data.category.map((e) => {
@@ -178,7 +179,7 @@ function UploadSubCategory({ fetchSubCAtegory, onclose }) {
 
           <button
             type="submit"
-            className={`px-4 py-2 border${
+            className={`px-4 border py-2  ${
               data?.name && data?.image && data?.category[0]
                 ? "bg-amber-400 hover:bg-amber-200"
                 : "bg-gray-200"
