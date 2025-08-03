@@ -19,7 +19,8 @@ import AdminPermision from "../layouts/AdminPermision";
 import ProductListPage from "../pages/ProductListPage";
 import ProductDisplayPage from "../pages/ProductDisplayPage";
 import UserMenuMobile from "../pages/UserMenuMobile";
-
+import CartMobile from "../pages/CartMobile";
+import Checkout from "../pages/Checkout";
 
 const router=createBrowserRouter([
     {
@@ -53,6 +54,10 @@ const router=createBrowserRouter([
             {
                 path:"reset-password",
                 element:<ResetPassword/>
+            },
+            {
+                path:"address",
+                element:<Address/>
             },
             {
                 path:"dashboard",
@@ -104,7 +109,15 @@ const router=createBrowserRouter([
             {
                 path:"product/:product",
                 element:<ProductDisplayPage/>
-            }
+            },
+            {
+                path:"cart",
+                element:<CartMobile/>
+            },
+            {
+                path:"checkout",
+                element:<Checkout/>
+            },
         ]
     }
 ])

@@ -24,7 +24,7 @@ function CategoryVWiseProductDisplay({ id, name }) {
       });
       if (response.data.success) {
         setData(response.data.data);
-        toast.success(response.data.message);
+        // toast.success(response.data.message);
       }
     } catch (error) {
       AxiosTostError(error);

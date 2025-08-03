@@ -121,4 +121,20 @@ export const SummaryApi = {
     url:"api/cart/delete-cart",
     method:"delete"
   },
+  Add_address:{
+    url:"api/address/create",
+    method:"post"
+  },
+  get_address:{
+    url:"api/address/get",
+    method:"get"
+  },
+  update_address:{
+    url:"api/address/update",
+    method:"put"
+  },
+  delete_address:{
+    url:"api/address/delete",
+    method:"put"
+  },
 };

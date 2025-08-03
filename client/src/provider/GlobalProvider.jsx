@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleAddItemCart } from "../store/cartSlice";
 import { AxiosTostError } from "../utils/AxiosToastError";
 import toast from "react-hot-toast";
+import { handleAddAddress } from "../store/addressSlice";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const GlobalContext = createContext(null);
@@ -59,6 +60,20 @@ const GlobalProvider = ({ children }) => {
       AxiosTostError(error);
     }
   };
+  const user=useSelector(state=>state.user.user)
+
+  const fetchAddress=async()=>{
+    try {
+      const response=await Axios({
+        ...SummaryApi.get_address
+      })
+      if(response.data.success)
+        dispatch(handleAddAddress(response.data.data))
+    } catch (error) {
+      AxiosTostError(error)
+    }
+  }
+
   useEffect(() => {
     const Qty = cartItem?.reduce((prev, curr) => {
       return prev + curr.quantity;
@@ -73,7 +88,8 @@ const GlobalProvider = ({ children }) => {
   
   useEffect(() => {
     fetchCartItem();
-  }, []);
+    fetchAddress();
+  }, [user]);
 
   return (
     <GlobalContext.Provider
@@ -81,6 +97,7 @@ const GlobalProvider = ({ children }) => {
         fetchCartItem,
         updateCartItem,
         deleteCartItem,
+        fetchAddress,
         totalPrice,
         totalQty,
       }}

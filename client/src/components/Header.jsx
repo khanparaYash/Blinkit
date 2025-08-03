@@ -54,7 +54,7 @@ function Header() {
             <Search />
           </div>
 
-          {/* Login & Cart */}
+          {/* Login  */}
           <div>
             {/* for mobile */}
             <button
@@ -107,10 +107,11 @@ function Header() {
               )}
             </div>
           </div>
+
           {/**add to card icons */}
           <button
             onClick={() => setOpenCartSection(true)}
-            className="flex items-center gap-2 bg-green-800 hover:bg-green-700 px-3 py-2 rounded text-white"
+            className="hidden lg:flex items-center gap-2 bg-green-800 hover:bg-green-700 px-3 py-2 rounded text-white"
           >
             <div className="animate-bounce">
               <BsCart4 size={26} />
@@ -132,7 +133,7 @@ function Header() {
         <Search />
       </div>
       {OpenCartSection && (
-        <DisplayCartItem close={() => setOpenCartSection(false)} />
+        <DisplayCartItem onclose={() => setOpenCartSection(false)} />
       )}
     </header>
   );

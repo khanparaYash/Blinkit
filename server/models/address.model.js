@@ -27,6 +27,10 @@ const addressSchema = new mongoose.Schema({
         type:Boolean,
         default:true,
     },
+    userId:{
+        type:mongoose.Schema.ObjectId,
+        default:""
+    }
 
 },{
     timestamps:true

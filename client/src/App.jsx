@@ -1,5 +1,5 @@
 import "./App.css";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { Toaster } from "react-hot-toast";
@@ -11,10 +11,10 @@ import { Axios } from "./utils/Axios";
 import { SummaryApi } from "./common/SummaryApi";
 import { setAllCategory, setLoadingCategory, setSubCategory } from "./store/ProductSlice";
 import GlobalProvider from "./provider/GlobalProvider";
-
+import CartMobileLink from "./components/CartMobileLink";
 function App() {
   const dispatch = useDispatch();
-
+  const location=useLocation()
   const fetchUser = async () => {
     const user = await fetchUserDetails();
     dispatch(setUserDetails(user.data.data));
@@ -65,6 +65,12 @@ function App() {
       </main>
       <Footer />
       <Toaster />
+      {
+        location.pathname!=="/checkout"&&(
+
+          <CartMobileLink/>
+        )
+      }
     </GlobalProvider>
   );
 }
