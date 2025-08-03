@@ -52,11 +52,12 @@ function Home() {
           : categoryData.map((c, index) => {
               return (
                 <div
+
                   key={index}
                   onClick={() => {
                     handleRedirectProductListPage(c._id, c.name);
                   }}
-                  className="w-full h-full"
+                  className="w-full h-full cursor-pointer  hover:shadow"
                 >
                   <img src={c.image} alt="" className="w-full h-full object-scale-down"/>
                   

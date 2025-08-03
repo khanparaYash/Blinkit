@@ -180,7 +180,7 @@ function UploadSubCategory({ fetchSubCAtegory, onclose }) {
           <button
             type="submit"
             className={`px-4 border py-2  ${
-              data?.name && data?.image && data?.category[0]
+              (data?.name && data?.image && data?.category[0])
                 ? "bg-amber-400 hover:bg-amber-200"
                 : "bg-gray-200"
             }font-semibold`}

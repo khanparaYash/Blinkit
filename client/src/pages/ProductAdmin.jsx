@@ -4,16 +4,17 @@ import { AxiosTostError } from "../utils/AxiosToastError";
 import { Axios } from "../utils/Axios";
 import ProductCardAdmin from "../components/ProductCardAdmin";
 import { IoSearchOutline } from "react-icons/io5";
+import Loading from "../components/Loading";
 function ProductAdmin() {
   const [productData, setProductData] = useState([]);
   const [page, setPage] = useState(1);
-  const [loading, setLoding] = useState(false);
+  const [loading,setLoading]=useState(false)
   const [totalPageCount, setTotalPageCount] = useState(1);
   const [productSearch, setProductSearch] = useState("");
 
   const fetchProductData = async () => {
     try {
-      setLoding(true);
+      setLoading(true)
       const response = await Axios({
         ...SummaryApi.get_product,
         data: { page: page, limit: 10, search: productSearch },
@@ -24,8 +25,8 @@ function ProductAdmin() {
       }
     } catch (error) {
       AxiosTostError(error);
-    } finally {
-      setLoding(false);
+    } finally{
+      setLoading(false)
     }
   };
 
@@ -78,7 +79,7 @@ function ProductAdmin() {
         </div>
       </div>
 
-      {loading ?? <div>Loading.....</div>}
+      {loading ?? <Loading/>}
 
       <div className="p-4 bg-blue-50">
         <div className="min-h-[55vh]">

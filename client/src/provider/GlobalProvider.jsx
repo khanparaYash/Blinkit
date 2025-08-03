@@ -6,6 +6,8 @@ import { handleAddItemCart } from "../store/cartSlice";
 import { AxiosTostError } from "../utils/AxiosToastError";
 import toast from "react-hot-toast";
 import { handleAddAddress } from "../store/addressSlice";
+import { setOrder } from "../store/orderSlice";
+import Loading from "../components/Loading";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const GlobalContext = createContext(null);
@@ -74,6 +76,22 @@ const GlobalProvider = ({ children }) => {
     }
   }
 
+  const fetchOrder = async()=>{
+      try {
+        const response = await Axios({
+          ...SummaryApi.order_list,
+        })
+        const { data : responseData } = response
+
+        if(responseData.success){
+          
+            dispatch(setOrder(responseData.data))
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
   useEffect(() => {
     const Qty = cartItem?.reduce((prev, curr) => {
       return prev + curr.quantity;
@@ -89,6 +107,7 @@ const GlobalProvider = ({ children }) => {
   useEffect(() => {
     fetchCartItem();
     fetchAddress();
+    fetchOrder()
   }, [user]);
 
   return (
@@ -98,11 +117,14 @@ const GlobalProvider = ({ children }) => {
         updateCartItem,
         deleteCartItem,
         fetchAddress,
+        fetchOrder,
         totalPrice,
         totalQty,
+        
       }}
     >
       {children}
+        
     </GlobalContext.Provider>
   );
 };

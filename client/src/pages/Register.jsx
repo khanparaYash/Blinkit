@@ -6,11 +6,13 @@ import toast from "react-hot-toast";
 import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import { AxiosTostError } from "../utils/AxiosToastError";
+import Loading from "../components/Loading";
+
 
 function Register() {
   const [passwordshow, setPasswordshow] = useState(false);
   const navigate = useNavigate();
-
+const [loading,setLoading]=useState(false)
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -37,6 +39,7 @@ function Register() {
       return;
     }
     try {
+      setLoading(true)
       const response = await Axios({
         ...SummaryApi.register,
         data: data,
@@ -54,11 +57,14 @@ function Register() {
       }
     } catch (error) {
       AxiosTostError(error);
+    }finally{
+      setLoading(false)
     }
   };
 
   return (
     <section className="w-full container mx-auto px-2">
+      {loading&&(<Loading/>)}
       <div className="bg-white my-4 w-full max-w-lg mx-auto rounded p-7">
         <p>Welcome to Blinkeyit</p>
 

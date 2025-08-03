@@ -61,7 +61,7 @@ function CategoryVWiseProductDisplay({ id, name }) {
     <div>
       {data.length>=1 && (
         <>
-          <div className="container mx-auto p-4 flex items-center justify-between gap-4">
+          <div className="container mx-auto p-4 flex items-center justify-between gap-4 ">
             <h3 className="font-semibold text-lg md:text-xl">{name}</h3>
             <Link
               to={redirectURL}

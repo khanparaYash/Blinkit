@@ -12,6 +12,7 @@ import { SummaryApi } from "./common/SummaryApi";
 import { setAllCategory, setLoadingCategory, setSubCategory } from "./store/ProductSlice";
 import GlobalProvider from "./provider/GlobalProvider";
 import CartMobileLink from "./components/CartMobileLink";
+import Loading from "./components/Loading";
 function App() {
   const dispatch = useDispatch();
   const location=useLocation()
@@ -22,6 +23,7 @@ function App() {
 
   const fetchCategory = async () => {
     try {
+      
       dispatch(setLoadingCategory(true))
       const response = await Axios({
         ...SummaryApi.get_Category,
@@ -34,6 +36,7 @@ function App() {
       console.log(error);
     }finally{
       dispatch(setLoadingCategory(false))
+      
     }
   };
 

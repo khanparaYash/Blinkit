@@ -9,7 +9,7 @@ import {
 const router = Router();
 
 router.post("/add-category", auth, AddCategoryController);
-router.get("/get-category", auth, getCategoryController);
+router.get("/get-category",  getCategoryController);
 router.put("/update-category",auth, updateCategoryController);
 router.delete("/delete-category",auth, deleteCategoryController);
 export default router;

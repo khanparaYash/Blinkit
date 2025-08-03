@@ -66,7 +66,7 @@ function EditSubCategory({ onclose, EditData, fetchSubCategory }) {
     }
   };
   return (
-    <section className="fixed top-0 right-0 bottom-0 left-0 bg-neutral-800 bg-opacity-70 z-50 flex items-center justify-center p-4">
+    <section className="fixed top-0 right-0 bottom-0 left-0 bg-neutral-800/70 z-50 overflow-auto flex items-center justify-center p-4">
       <div className="w-full max-w-5xl bg-white p-4 rounded">
         <div className="flex items-center justify-between gap-3">
           <h1 className="font-semibold">Edit Sub Category</h1>
