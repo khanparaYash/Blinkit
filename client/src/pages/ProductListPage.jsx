@@ -7,12 +7,14 @@ import CardProduct from "../components/CardProduct";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { validURLConverter } from "../utils/validURlConvert";
+import { useGlobalContext } from "../provider/GlobalProvider";
 
 function ProductListPage() {
   const params = useParams();
   const [data, setData] = useState([]);
   // const [page, setPage] = useState(1);
-  const [loading, setLoding] = useState(false);
+  
+    const {setLoading}=useGlobalContext()
   // const [totalPage, setTotalPage] = useState(1);
 
   const subCategoryName1 = params.subCategory.split("-");
@@ -27,7 +29,7 @@ function ProductListPage() {
 
   const fetchProductData = async () => {
     try {
-      setLoding(true);
+      setLoading(true);
       const response = await Axios({
         ...SummaryApi.get_productByCategory_SubCategory,
         data: {
@@ -50,7 +52,7 @@ function ProductListPage() {
     } catch (error) {
       AxiosTostError(error);
     } finally {
-      setLoding(false);
+      setLoading(false);
     }
   };
 
@@ -118,11 +120,7 @@ function ProductListPage() {
               }
             </div>
           </div>
-          {
-            loading && (
-                <h1>Loading</h1>
-            )
-          }
+          
         </div>
         
       </div>

@@ -5,10 +5,12 @@ import { Axios } from "../utils/Axios";
 import ProductCardAdmin from "../components/ProductCardAdmin";
 import { IoSearchOutline } from "react-icons/io5";
 import Loading from "../components/Loading";
+import { useGlobalContext } from "../provider/GlobalProvider";
 function ProductAdmin() {
   const [productData, setProductData] = useState([]);
   const [page, setPage] = useState(1);
-  const [loading,setLoading]=useState(false)
+  
+    const {setLoading}=useGlobalContext()
   const [totalPageCount, setTotalPageCount] = useState(1);
   const [productSearch, setProductSearch] = useState("");
 
@@ -79,7 +81,6 @@ function ProductAdmin() {
         </div>
       </div>
 
-      {loading ?? <Loading/>}
 
       <div className="p-4 bg-blue-50">
         <div className="min-h-[55vh]">

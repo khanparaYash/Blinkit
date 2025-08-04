@@ -10,9 +10,9 @@ import { SummaryApi } from "../common/SummaryApi";
 import { AxiosTostError } from "../utils/AxiosToastError";
 import successAlert from "../utils/SuccessAlert";
 import { IoClose } from "react-icons/io5";
+import { useGlobalContext } from "../provider/GlobalProvider";
 
 function EditProductAdmin({ onclose, oldData, fetchProductData }) {
-  console.log(oldData);
 
   const [data, setData] = useState({
     name: oldData.name || "",
@@ -26,8 +26,10 @@ function EditProductAdmin({ onclose, oldData, fetchProductData }) {
     description: oldData.description,
     more_details: oldData.more_details || {},
   });
+  
+  const {setLoading}=useGlobalContext()
   const [viewImage, setViewImage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loadingImg, setLoadingImg] = useState(false);
   const [selectCategory, setSelectCategory] = useState("");
   const [selectSubCategory, setSelectSubCategory] = useState("");
 
@@ -48,7 +50,7 @@ function EditProductAdmin({ onclose, oldData, fetchProductData }) {
   };
   const handleUploadImage = async (e) => {
     const file = e.target.files[0];
-    setLoading(true);
+    setLoadingImg(true);
     if (!file) return;
     const response = await uploadImage(file);
 
@@ -58,7 +60,7 @@ function EditProductAdmin({ onclose, oldData, fetchProductData }) {
         image: [...prev.image, response.data.data.url],
       };
     });
-    setLoading(false);
+    setLoadingImg(false);
   };
   const handleDelete = async (index) => {
     data.image.splice(index, 1);
@@ -102,6 +104,7 @@ function EditProductAdmin({ onclose, oldData, fetchProductData }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true)
       const response = await Axios({
         ...SummaryApi.update_product,
         data: { _id: oldData._id, data },
@@ -127,6 +130,8 @@ function EditProductAdmin({ onclose, oldData, fetchProductData }) {
       }
     } catch (error) {
       AxiosTostError(error);
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -184,7 +189,7 @@ function EditProductAdmin({ onclose, oldData, fetchProductData }) {
                     className='bg-blue-50 h-24 border rounded flex justify-center items-center cursor-pointer'
                     >
                     <div className="text-center flex justify-center items-center flex-col">
-                      {loading ? "Loading" : <p>upload Image</p>}
+                      {loadingImg ? "Loading" : <p>upload Image</p>}
                     </div>
                     <input
                       type="file"

@@ -5,15 +5,19 @@ import { SummaryApi } from "../common/SummaryApi";
 import { AxiosTostError } from "../utils/AxiosToastError";
 import AddToCart from "../components/AddToCart";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
-import image2 from "../assets/image1.png"
-import image1 from "../assets/image2.png"
-import image3 from "../assets/image3.png"
+import image2 from "../assets/image1.png";
+import image1 from "../assets/image2.png";
+import image3 from "../assets/image3.png";
+import { useGlobalContext } from "../provider/GlobalProvider";
+import { DisplayPriceInRupees } from "../utils/DisplayPriceInRupees";
+import { pricewithDiscount } from "../utils/pricewithDiscount";
 function ProductDisplayPage() {
   const params = useParams();
   let productId = params?.product?.split("-").slice(-1)[0];
   const [data, setData] = useState({});
   const [image, setImage] = useState(0);
-  const [loading, setLoading] = useState(false);
+
+  const { setLoading } = useGlobalContext();
   const imageContainer = useRef();
   // console.log(product);
 
@@ -120,7 +124,7 @@ function ProductDisplayPage() {
           {data?.more_details &&
             Object.keys(data?.more_details).map((element, index) => {
               return (
-                <div>
+                <div key={index}>
                   <p className="font-semibold">{element}</p>
                   <p className="text-base">{data?.more_details[element]}</p>
                 </div>
@@ -133,26 +137,34 @@ function ProductDisplayPage() {
         <p className="bg-green-300 w-fit px-2 rounded-full">10 Min</p>
         <h2 className="text-lg font-semibold lg:text-3xl">{data.name}</h2>
         <p className="">{data.unit}</p>
-        
+
         <div>
           <p className="">Price</p>
           <div className="flex items-center gap-2 lg:gap-4">
             <div className="border border-green-600 px-4 py-2 rounded bg-green-50 w-fit">
-              <p className="font-semibold text-lg lg:text-xl">
-                
-                { data.price}
-                
-              </p>
+              {data?.discount ? (
+                <p className="font-semibold text-lg lg:text-xl">
+                  {DisplayPriceInRupees(
+                    pricewithDiscount(data.price, data.discount)
+                  )}
+                </p>
+              ) : (
+                <p className="font-semibold text-lg lg:text-xl">
+                  {DisplayPriceInRupees(data.price)}
+                </p>
+              )}
             </div>
-            {data.discount && (
-              <p className="line-through">{data.price}</p>
-            )}
-            {data.discount && (
+            {data.discount ? (
+              <p className="line-through" >
+                {DisplayPriceInRupees(data.price)}
+              </p>
+            ):(<></>)}
+            {data.discount ? (
               <p className="font-bold text-green-600 lg:text-2xl">
                 {data.discount}%{" "}
                 <span className="text-base text-neutral-500">Discount</span>
               </p>
-            )}
+            ):(<></>)}
           </div>
         </div>
         {data.stock === 0 ? (
@@ -198,7 +210,7 @@ function ProductDisplayPage() {
         </div>
 
         {/****only mobile */}
-        <div className="my-4 grid gap-3 ">
+        <div className="my-4 lg:hidden grid gap-3 ">
           <div>
             <p className="font-semibold">Description</p>
             <p className="text-base">{data.description}</p>
@@ -218,8 +230,6 @@ function ProductDisplayPage() {
             })}
         </div>
       </div>
-
-
     </section>
   );
 }

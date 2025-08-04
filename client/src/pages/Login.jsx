@@ -10,10 +10,11 @@ import { useDispatch } from "react-redux";
 import { fetchUserDetails } from "../utils/fetchUserDetails";
 import { setUserDetails } from "../store/userSlice";
 import Loading from "../components/Loading";
+import { useGlobalContext } from "../provider/GlobalProvider";
 
 function Login() {
   const [passwordshow, setPasswordshow] = useState(false);
-  const [loading,setLoading]=useState(false)
+   const {setLoading}=useGlobalContext()
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [data, setData] = useState({
@@ -59,12 +60,12 @@ function Login() {
       AxiosTostError(error);
     }finally{
       setLoading(false)
-    }
+    } 
   };
 
   return (
     <section className="w-full container mx-auto px-2">
-      {loading&&(<Loading/>)}
+      
       <div className="bg-white my-4 w-full max-w-lg mx-auto rounded p-7">
         {/* <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
           Login Account

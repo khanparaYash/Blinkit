@@ -7,11 +7,14 @@ import { AxiosTostError } from "../utils/AxiosToastError";
 
 import { IoMdEyeOff } from "react-icons/io";
 import { IoMdEye } from "react-icons/io";
+import Loading from "../components/Loading";
+import { useGlobalContext } from "../provider/GlobalProvider";
 
 const ResetPassword = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
+  
+    const {setLoading}=useGlobalContext()
   const [passwordshow, setPasswordshow] = useState(false);
   const [data, setData] = useState({
     email: "",
@@ -22,15 +25,18 @@ const ResetPassword = () => {
     if (!location?.state?.data?.success) {
       navigate("/");
     }
+    
     if (location?.state?.email) {
       setData((prev) => {
         return {
           ...prev,
           email: location?.state?.email,
+          
         };
       });
+      
     }
-  }, []);
+  }, [location.state,navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,6 +53,9 @@ const ResetPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log(data);
+      
+      setLoading(true)
       if (data.newPassword !== data.confirmPassword) {
         toast.error("new Password and confirm password must be same");
         return;
@@ -61,6 +70,8 @@ const ResetPassword = () => {
       }
     } catch (error) {
       AxiosTostError(error);
+    }finally{
+      setLoading(false)
     }
   };
   return (

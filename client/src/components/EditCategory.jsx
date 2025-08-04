@@ -4,6 +4,7 @@ import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import toast from "react-hot-toast";
 import { IoClose } from "react-icons/io5";
+import { useGlobalContext } from "../provider/GlobalProvider";
 
 function EditCategory({ dataEdit: edit, onclose }) {
   const [data, setData] = useState({
@@ -11,7 +12,9 @@ function EditCategory({ dataEdit: edit, onclose }) {
     name: edit.name,
     image: edit.image,
   });
-  const [loading, setLoding] = useState(false);
+  const [loadingImg, setLoadingImg] = useState(false);
+  
+    const {loading ,setLoading}=useGlobalContext()
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -26,7 +29,7 @@ function EditCategory({ dataEdit: edit, onclose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoding(true);
+      setLoading(true);
       console.log(data);
 
       const response = await Axios({
@@ -41,14 +44,14 @@ function EditCategory({ dataEdit: edit, onclose }) {
     } catch (error) {
       console.log(error);
     } finally {
-      setLoding(false);
+      setLoading(false);
     }
   };
 
   const handleUploadCategory = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    setLoding(true);
+    setLoadingImg(true);
     const response = await uploadImage(file);
     const { data: ImageResponse } = response;
     setData((prev) => {
@@ -57,7 +60,7 @@ function EditCategory({ dataEdit: edit, onclose }) {
         image: ImageResponse.data.url,
       };
     });
-    setLoding(false);
+    setLoadingImg(false);
   };
   return (
     <section className="fixed top-0 bottom-0 left-0 right-0 p-4 bg-neutral-800/60 flex items-center z-40 justify-center">
@@ -107,7 +110,7 @@ function EditCategory({ dataEdit: edit, onclose }) {
                             px-4 py-2 rounded cursor-pointer border font-medium
                         `}
                 >
-                  {loading ? "Loading" : "upload Image"}
+                  {loadingImg ? "Loading" : "upload Image"}
                 </div>
                 <input
                   disabled={!data.name}

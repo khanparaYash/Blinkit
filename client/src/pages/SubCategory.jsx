@@ -13,6 +13,7 @@ import { setSubCategory } from "../store/ProductSlice";
 import { LuPencil } from "react-icons/lu";
 import { MdDelete } from "react-icons/md";
 import { HiPencil } from "react-icons/hi";
+import { useGlobalContext } from "../provider/GlobalProvider";
 
 function SubCategory() {
   const [data, setData] = useState([]);
@@ -21,7 +22,7 @@ function SubCategory() {
   });
   const [ImageURl, setImageURl] = useState("");
 
-  const [loading, setLoading] = useState(false);
+  const {loading ,setLoading}=useGlobalContext()
   const [openUploadSubCategory, setOpenUploadSubCategory] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);

@@ -7,6 +7,7 @@ import { SummaryApi } from "../common/SummaryApi";
 import toast from "react-hot-toast";
 import { AxiosTostError } from "../utils/AxiosToastError";
 import { IoClose } from "react-icons/io5";
+import { useGlobalContext } from "../provider/GlobalProvider";
 
 function EditSubCategory({ onclose, EditData, fetchSubCategory }) {
   const [data, setData] = useState({
@@ -15,9 +16,10 @@ function EditSubCategory({ onclose, EditData, fetchSubCategory }) {
     image: EditData.image,
     category: EditData.category,
   });
-  const [loading, setLoading] = useState(false);
+  const [loadingImg, setLoadingImg] = useState(false);
   const allCategory = useSelector((state) => state.product.allCategory);
 
+  const {setLoading}=useGlobalContext()
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => {
@@ -31,7 +33,7 @@ function EditSubCategory({ onclose, EditData, fetchSubCategory }) {
     const file = e.target.files[0];
 
     if (!file) return;
-    setLoading(true);
+    setLoadingImg(true);
     const response = await uploadImage(file);
     setData((prev) => {
       return {
@@ -39,7 +41,7 @@ function EditSubCategory({ onclose, EditData, fetchSubCategory }) {
         image: response.data.data.url,
       };
     });
-    setLoading(false);
+    setLoadingImg(false);
   };
   const handleRemoveCategorySelected = (categoryId) => {
     setData((prev) => ({
@@ -50,6 +52,7 @@ function EditSubCategory({ onclose, EditData, fetchSubCategory }) {
   const handleSubmitSubCategory = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true)
       const response = await Axios({
         ...SummaryApi.update_sub_category,
         data,
@@ -63,6 +66,8 @@ function EditSubCategory({ onclose, EditData, fetchSubCategory }) {
       }
     } catch (error) {
       AxiosTostError(error);
+    }finally{
+      setLoading(false)
     }
   };
   return (
@@ -105,7 +110,7 @@ function EditSubCategory({ onclose, EditData, fetchSubCategory }) {
               </div>
               <label htmlFor="uploadSubCategoryImage">
                 <div className="px-4 py-1 border border-amber-400 text-amber-400 rounded hover:bg-amber-300 hover:text-neutral-900 cursor-pointer  ">
-                  upload Image
+                  {loadingImg?("Loading"):("upload Image")}
                 </div>
                 <input
                   disabled={!data.name}
@@ -187,7 +192,7 @@ function EditSubCategory({ onclose, EditData, fetchSubCategory }) {
                             font-semibold
                         `}
           >
-            {loading ? "Loading" : "Add Sub Category"}
+            {loadingImg ? "Loading" : "Add Sub Category"}
           </button>
         </form>
 

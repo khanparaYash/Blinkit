@@ -11,6 +11,7 @@ import DisplayCartItem from "./DisplayCartItem.jsx";
 import { useGlobalContext } from "../provider/GlobalProvider";
 import logo from "../assets/logo.png";
 import useMobile from "../hooks/useMobile";
+import { DisplayPriceInRupees } from "../utils/DisplayPriceInRupees.js";
 function Header() {
   const [isMobile] = useMobile();
   const navigate = useNavigate();
@@ -120,7 +121,7 @@ function Header() {
               {cartItem[0] ? (
                 <div>
                   <p>{totalQty} Items</p>
-                  <p>{totalPrice}</p>
+                  <p>{DisplayPriceInRupees(totalPrice)}</p>
                 </div>
               ) : (
                 <p>My Cart</p>

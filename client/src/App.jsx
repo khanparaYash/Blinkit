@@ -12,10 +12,11 @@ import { SummaryApi } from "./common/SummaryApi";
 import { setAllCategory, setLoadingCategory, setSubCategory } from "./store/ProductSlice";
 import GlobalProvider from "./provider/GlobalProvider";
 import CartMobileLink from "./components/CartMobileLink";
-import Loading from "./components/Loading";
+import ForOutlet from "./components/ForOutlet";
 function App() {
   const dispatch = useDispatch();
   const location=useLocation()
+  
   const fetchUser = async () => {
     const user = await fetchUserDetails();
     dispatch(setUserDetails(user.data.data));
@@ -64,7 +65,7 @@ function App() {
     <GlobalProvider>
       <Header />
       <main>
-        <Outlet />
+        <ForOutlet/>
       </main>
       <Footer />
       <Toaster />

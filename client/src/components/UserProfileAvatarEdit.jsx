@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React  from "react";
 import { CgProfile } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
 import { AxiosTostError } from "../utils/AxiosToastError";
@@ -6,10 +6,12 @@ import { SummaryApi } from "../common/SummaryApi";
 import { Axios } from "./../utils/Axios";
 import { updateAvatar } from "../store/userSlice";
 import { IoMdClose } from "react-icons/io";
+import { useGlobalContext } from "../provider/GlobalProvider";
 
 function UserProfileAvatarEdit({ close }) {
   const user = useSelector((state) => state?.user);
-  const [loading, setLoading] = useState(false);
+  
+  const {setLoading}=useGlobalContext()
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
@@ -58,7 +60,7 @@ function UserProfileAvatarEdit({ close }) {
         <form onSubmit={handleSubmit}>
           <label htmlFor="uploadProfile">
             <div className="border border-primary-200 cursor-pointer hover:bg-primary-200 px-4 py-1 rounded text-sm my-3">
-              {loading ? "Loading..." : "upload"}
+              upload
             </div>
           </label>
           <input

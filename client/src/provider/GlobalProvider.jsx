@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { handleAddAddress } from "../store/addressSlice";
 import { setOrder } from "../store/orderSlice";
 import Loading from "../components/Loading";
+import { pricewithDiscount } from "../utils/pricewithDiscount";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const GlobalContext = createContext(null);
@@ -19,8 +20,9 @@ const GlobalProvider = ({ children }) => {
   const dispatch = useDispatch();
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQty, setTotalQty] = useState(0);
+  const [notDiscountTotalPrice,setNotDiscountTotalPrice] = useState(0)
   const cartItem = useSelector((state) => state?.cart?.cart);
-
+  const [loading, setLoading] = useState(false);
   const fetchCartItem = async () => {
     try {
       const response = await Axios({
@@ -62,35 +64,33 @@ const GlobalProvider = ({ children }) => {
       AxiosTostError(error);
     }
   };
-  const user=useSelector(state=>state.user.user)
+  const user = useSelector((state) => state.user.user);
 
-  const fetchAddress=async()=>{
+  const fetchAddress = async () => {
     try {
-      const response=await Axios({
-        ...SummaryApi.get_address
-      })
-      if(response.data.success)
-        dispatch(handleAddAddress(response.data.data))
+      const response = await Axios({
+        ...SummaryApi.get_address,
+      });
+      if (response.data.success) dispatch(handleAddAddress(response.data.data));
     } catch (error) {
-      AxiosTostError(error)
+      AxiosTostError(error);
     }
-  }
+  };
 
-  const fetchOrder = async()=>{
-      try {
-        const response = await Axios({
-          ...SummaryApi.order_list,
-        })
-        const { data : responseData } = response
+  const fetchOrder = async () => {
+    try {
+      const response = await Axios({
+        ...SummaryApi.order_list,
+      });
+      const { data: responseData } = response;
 
-        if(responseData.success){
-          
-            dispatch(setOrder(responseData.data))
-        }
-      } catch (error) {
-        console.log(error)
+      if (responseData.success) {
+        dispatch(setOrder(responseData.data));
       }
+    } catch (error) {
+      console.log(error);
     }
+  };
 
   useEffect(() => {
     const Qty = cartItem?.reduce((prev, curr) => {
@@ -98,16 +98,23 @@ const GlobalProvider = ({ children }) => {
     }, 0);
     setTotalQty(Qty);
 
-    const tPrice = cartItem.reduce((prev, curr) => {
-      return prev + curr.productId?.price * curr.quantity;
-    }, 0);
+ const tPrice = cartItem.reduce((preve,curr)=>{
+          const priceAfterDiscount = pricewithDiscount(curr?.productId?.price,curr?.productId?.discount)
+
+          return preve + (priceAfterDiscount * curr.quantity)
+      },0)
     setTotalPrice(tPrice);
+
+     const notDiscountPrice = cartItem.reduce((prev,curr)=>{
+        return prev + (curr?.productId?.price * curr.quantity)
+      },0)
+      setNotDiscountTotalPrice(notDiscountPrice)
   }, [cartItem]);
-  
+
   useEffect(() => {
     fetchCartItem();
     fetchAddress();
-    fetchOrder()
+    fetchOrder();
   }, [user]);
 
   return (
@@ -118,13 +125,14 @@ const GlobalProvider = ({ children }) => {
         deleteCartItem,
         fetchAddress,
         fetchOrder,
+        notDiscountTotalPrice,
         totalPrice,
         totalQty,
-        
+        loading,
+        setLoading,
       }}
     >
       {children}
-        
     </GlobalContext.Provider>
   );
 };

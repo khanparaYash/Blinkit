@@ -9,6 +9,7 @@ import { SummaryApi } from "../common/SummaryApi";
 // import toast from "react-hot-toast";
 import { AxiosTostError } from "../utils/AxiosToastError";
 import successAlert from "../utils/SuccessAlert";
+import { useGlobalContext } from "../provider/GlobalProvider";
 
 function UploadProduct() {
   const [data, setData] = useState({
@@ -24,7 +25,9 @@ function UploadProduct() {
     more_details: {},
   });
   const [viewImage, setViewImage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loadingImg, setLoadingImg] = useState(false);
+  
+    const {setLoading}=useGlobalContext()
   const [selectCategory, setSelectCategory] = useState("");
   const [selectSubCategory, setSelectSubCategory] = useState("");
 
@@ -45,7 +48,7 @@ function UploadProduct() {
   };
   const handleUploadImage = async (e) => {
     const file = e.target.files[0];
-    setLoading(true);
+    setLoadingImg(true);
     if (!file) return;
     const response = await uploadImage(file);
 
@@ -55,8 +58,9 @@ function UploadProduct() {
         image: [...prev.image, response?.data?.data?.url],
       };
     });
-    setLoading(false);
+    setLoadingImg(false);
   };
+
   const handleDelete = async (index) => {
     data.image.splice(index, 1);
     setData((prev) => {
@@ -99,6 +103,7 @@ function UploadProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true)
       const response = await Axios({
         ...SummaryApi.add_product,
         data: data,
@@ -121,6 +126,8 @@ function UploadProduct() {
       }
     } catch (error) {
       AxiosTostError(error);
+    }finally{
+      setLoading(false)
     }
   };
   return (
@@ -172,7 +179,7 @@ function UploadProduct() {
                 className="bg-blue-50 h-24 border rounded flex justify-center items-center cursor-pointer"
               >
                 <div className="text-center flex justify-center h-full items-center">
-                  {loading ? "Loading" : <p>upload Image</p>}
+                  {loadingImg ? "Loading" : <p>upload Image</p>}
                 </div>
                 <input
                   type="file"

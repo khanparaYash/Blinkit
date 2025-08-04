@@ -8,6 +8,8 @@ import { IoClose } from "react-icons/io5";
 import { useGlobalContext } from '../provider/GlobalProvider'
 
 const EditAddressDetails = ({close, data}) => {
+    
+      const {setLoading}=useGlobalContext()
     const { register, handleSubmit,reset } = useForm({
         defaultValues : {
             _id : data._id,
@@ -24,6 +26,7 @@ const EditAddressDetails = ({close, data}) => {
 
     const onSubmit = async(data)=>{
         try {
+            setLoading(true)
             const response = await Axios({
                 ...SummaryApi.update_address,
                 data : {
@@ -49,6 +52,8 @@ const EditAddressDetails = ({close, data}) => {
             }
         } catch (error) {
             AxiosTostError(error)
+        }finally{
+            setLoading(false)
         }
     }
   return (

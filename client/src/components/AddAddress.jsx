@@ -8,12 +8,13 @@ import { SummaryApi } from '../common/SummaryApi'
 import { useForm } from 'react-hook-form'
 function AddAddress({onclose}) {
     const { register, handleSubmit,reset } = useForm()
-    const { fetchAddress } = useGlobalContext()
+    const { fetchAddress,setLoading } = useGlobalContext()
 
     const onSubmit = async(data)=>{
         console.log("data",data)
     
         try {
+            setLoading(true)
             const response = await Axios({
                 ...SummaryApi.Add_address,
                 data : {
@@ -38,6 +39,8 @@ function AddAddress({onclose}) {
             }
         } catch (error) {
             AxiosTostError(error)
+        }finally{
+            setLoading(false)
         }
     }
   return (

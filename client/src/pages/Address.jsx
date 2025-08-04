@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import AddAddress from '../components/AddAddress'
 import { MdDelete } from "react-icons/md";
@@ -11,14 +11,21 @@ import {AxiosTostError} from '../utils/AxiosToastError';
 import { useGlobalContext } from '../provider/GlobalProvider';
 
 const Address = () => {
+  
   const addressList = useSelector(state => state.address.addressList)
   const [openAddress,setOpenAddress] = useState(false)
   const [OpenEdit,setOpenEdit] = useState(false)
   const [editData,setEditData] = useState({})
-  const { fetchAddress} = useGlobalContext()
-
+  
+  const {fetchAddress ,setLoading}=useGlobalContext()
+  useEffect(() => {
+  if (fetchAddress) {
+    fetchAddress();
+  }
+}, []);
   const handleDisableAddress = async(id)=>{
     try {
+      setLoading(true)
       const response = await Axios({
         ...SummaryApi.delete_address,
         data : {
@@ -33,6 +40,8 @@ const Address = () => {
       }
     } catch (error) {
       AxiosTostError(error)
+    }finally{
+      setLoading(false)
     }
   }
   return (

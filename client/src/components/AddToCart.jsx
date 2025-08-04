@@ -14,7 +14,9 @@ function AddToCart({ data }) {
   const [isAvailable, setIsAvailable] = useState(false);
   const [qty, setQty] = useState(0);
   const [cartItemDetails,setCartItemDetails]=useState()
- const [loading,setLoading]=useState(false)
+//  const [loading,setLoading]=useState(false)
+ 
+  const {loading ,setLoading}=useGlobalContext()
 
   useEffect(() => {
     const checkingItem = cartItem.some(

@@ -8,6 +8,7 @@ import { AxiosTostError } from "../utils/AxiosToastError";
 import AddAddress from "../components/AddAddress";
 import { useGlobalContext } from "../provider/GlobalProvider";
 import { loadStripe } from "@stripe/stripe-js";
+import { DisplayPriceInRupees } from "../utils/DisplayPriceInRupees";
 function Checkout() {
   const {
     notDiscountTotalPrice,
@@ -15,15 +16,19 @@ function Checkout() {
     totalQty,
     fetchCartItem,
     fetchOrder,
+    setLoading
   } = useGlobalContext();
   const [openAddress, setOpenAddress] = useState(false);
   const addressList = useSelector((state) => state?.address?.addressList);
   const [selectAddress, setSelectAddress] = useState(0);
   const cartItemsList = useSelector((state) => state?.cart?.cart);
   const navigate = useNavigate();
+  
+  
 
   const handleCashOnDelivery = async () => {
     try {
+      setLoading(true)
       const response = await Axios({
         ...SummaryApi.cash_on_delivery,
         data: {
@@ -54,6 +59,8 @@ function Checkout() {
       }
     } catch (error) {
       AxiosTostError(error);
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -71,6 +78,7 @@ function Checkout() {
         console.log("68");
         return toast.error("Stripe failed to load");
       }
+      setLoading(true)
 
       const response = await Axios({
         ...SummaryApi.payment_url,
@@ -103,6 +111,8 @@ function Checkout() {
       }
     } catch (error) {
       AxiosTostError(error);
+    }finally{
+      setLoading(false)
     }
   };
   return (
@@ -161,7 +171,7 @@ function Checkout() {
                 <span className="line-through text-neutral-400">
                   {notDiscountTotalPrice}
                 </span>
-                <span>{totalPrice}</span>
+                <span>{DisplayPriceInRupees(totalPrice)}</span>
               </p>
             </div>
             <div className="flex gap-4 justify-between ml-1">
@@ -174,7 +184,7 @@ function Checkout() {
             </div>
             <div className="font-semibold flex items-center justify-between gap-4">
               <p>Grand total</p>
-              <p>{totalPrice}</p>
+              <p>{DisplayPriceInRupees(totalPrice)}</p>
             </div>
           </div>
           <div className="w-full flex flex-col gap-4">

@@ -330,8 +330,9 @@ export async function verifyForgotPasswordOtp(req, res) {
 }
 export async function resetPassword(req, res) {
   try {
-    const { email, newPassword, confirmPassword } = req.body;
-
+    const { email, newPassword, confirmPassword } = req.body.data;
+    console.log(email,newPassword,confirmPassword);
+    
     if (!email || !newPassword || !confirmPassword) {
       return res.status(400).json({
         message: "give email and password ",
@@ -349,7 +350,7 @@ export async function resetPassword(req, res) {
     const salt = await bcryptjs.genSalt(10);
     const hashPassword = await bcryptjs.hash(newPassword, salt);
 
-    const user = await UserModel.findOneAndUpdate(email, {
+    const user = await UserModel.findOneAndUpdate({email:email}, {
       password: hashPassword,
     });
     if (!user) {

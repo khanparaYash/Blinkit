@@ -7,6 +7,7 @@ import { SummaryApi } from "../common/SummaryApi";
 import toast from "react-hot-toast";
 import { AxiosTostError } from "../utils/AxiosToastError";
 import { IoClose } from "react-icons/io5";
+import { useGlobalContext } from "../provider/GlobalProvider";
 
 function UploadSubCategory({ fetchSubCAtegory, onclose }) {
   const [data, setData] = useState({
@@ -14,7 +15,9 @@ function UploadSubCategory({ fetchSubCAtegory, onclose }) {
     image: "",
     category: [],
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoadingImg] = useState(false);
+  
+  const {setLoading}=useGlobalContext()
   const allCategory = useSelector((state) => state?.product?.allCategory);
 
   const handleChange = (e) => {
@@ -31,7 +34,7 @@ function UploadSubCategory({ fetchSubCAtegory, onclose }) {
       const file = e.target.files[0];
 
       if (!file) return;
-      setLoading(true);
+      setLoadingImg(true);
       const response = await uploadImage(file);
       setData((prev) => {
         return {
@@ -42,7 +45,7 @@ function UploadSubCategory({ fetchSubCAtegory, onclose }) {
     } catch (error) {
       AxiosTostError(error);
     } finally {
-      setLoading(false);
+      setLoadingImg(false);
     }
   };
   const handleRemoveCategorySelected = (categoryId) => {
@@ -54,7 +57,7 @@ function UploadSubCategory({ fetchSubCAtegory, onclose }) {
   const handleSubmitSubCategory = async (e) => {
     e.preventDefault();
     try {
-      loading(true);
+      setLoading(true);
       const response = await Axios({
         ...SummaryApi.add_sub_category,
         data,
@@ -68,7 +71,7 @@ function UploadSubCategory({ fetchSubCAtegory, onclose }) {
     } catch (error) {
       AxiosTostError(error);
     } finally {
-      loading(false);
+      setLoading(false);
     }
   };
   return (

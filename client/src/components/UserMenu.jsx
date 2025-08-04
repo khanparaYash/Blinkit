@@ -8,14 +8,17 @@ import toast from "react-hot-toast";
 import { AxiosTostError } from "../utils/AxiosToastError";
 import { FiExternalLink } from "react-icons/fi";
 import isAdmin from "../utils/isAdmin";
+import { useGlobalContext } from "../provider/GlobalProvider";
 
 function UserMenu({ close }) {
   const user = useSelector((state) => state?.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  
+  const {setLoading}=useGlobalContext()
   const handelLogOut = async () => {
     try {
+      setLoading(true)
       const response = await Axios({
         ...SummaryApi.logout,
       });
@@ -30,6 +33,8 @@ function UserMenu({ close }) {
       }
     } catch (error) {
       AxiosTostError(error);
+    }finally{
+      setLoading(false)
     }
   };
   const handelCloseUserMenu = () => {

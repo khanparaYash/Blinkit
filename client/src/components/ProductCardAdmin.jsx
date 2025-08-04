@@ -5,14 +5,16 @@ import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import { AxiosTostError } from "../utils/AxiosToastError";
 import toast from "react-hot-toast";
+import { useGlobalContext } from "../provider/GlobalProvider";
 
 function ProductCardAdmin({ data, fetchProductData }) {
   const [editData, setEditData] = useState(false);
   const [deleteData, setDeleteData] = useState(false);
 
+  const {setLoading}=useGlobalContext()
   const handleDelete = async () => {
     try {
-
+      setLoading(true)
       const response = await Axios({
         ...SummaryApi.delete_product,
         data: { _id: data._id },
@@ -26,7 +28,7 @@ function ProductCardAdmin({ data, fetchProductData }) {
       }
     } catch (error) {
       AxiosTostError(error);
-    }
+    }finally{setLoading(false)}
   };
   return (
     <div className="w-36 p-4 justify-self-center bg-white rounded">

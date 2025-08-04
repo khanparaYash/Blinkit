@@ -3,18 +3,22 @@ import { Link } from "react-router-dom";
 import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import { AxiosTostError } from "../utils/AxiosToastError";
-import toast from "react-hot-toast";
+
 import CardProduct from "./CardProduct";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { validURLConverter } from "../utils/validURlConvert";
 import CardLoading from "./CardLoading.jsx";
+import { useGlobalContext } from "../provider/GlobalProvider.jsx";
+
 function CategoryVWiseProductDisplay({ id, name }) {
   const [data, setData] = useState([]);
   const containerRef = useRef();
-  const subCategoryData = useSelector((state) => state.product.allSubCategory);
-  const loadingCardNumber = new Array(6).fill(null);
-  const [loading, setLoading] = useState(false);
+  // const subCategoryData = useSelector((state) => state.product.allSubCategory);
+  // const loadingCardNumber = new Array(6).fill(null);
+  // const [loading, setLoading] = useState(false);
+
+  const {setLoading}=useGlobalContext()
   const fetchCategoryWiseProduct = async () => {
     try {
       setLoading(true);
@@ -42,21 +46,29 @@ function CategoryVWiseProductDisplay({ id, name }) {
   const handleScrollLeft = () => {
     containerRef.current.scrollLeft -= 200;
   };
-  const handleRedirectProductListpage = () => {
-    const subcategory = subCategoryData?.find((sub) => {
-      const filterData = sub.category.some((c) => {
-        return c._id == id;
-      });
 
-      return filterData ? true : null;
-    });
+  const handleRedirectProductListpage = () => {
+    // const subcategory = subCategoryData?.find((sub) => {
+    //   const filterData = sub.category.some((c) => {
+    //     return c._id == id;
+    //   });
+
+    //   return filterData ? true : null;
+    // });
+    // console.log(subCategoryData);
+    // console.log("56");
+    
+    // console.log(data);
+    
+    
     const url = `/${validURLConverter(name)}-${id}/${validURLConverter(
-      subcategory?.name
-    )}-${subcategory?._id}`;
+      data[0]?.name
+    )}-${data[0]?._id}`;
 
     return url;
   };
   const redirectURL = handleRedirectProductListpage();
+
   return (
     <div>
       {data.length>=1 && (
@@ -73,17 +85,17 @@ function CategoryVWiseProductDisplay({ id, name }) {
 
           <div className="relative flex items-center ">
             <div
-              className=" flex gap-4 md:gap-6 lg:gap-8 container mx-auto px-4 overflow-x-scroll scrollbar-none scroll-smooth"
+              className=" flex gap-4 md:gap-6 lg:gap-8 mb-3 container mx-auto px-4 overflow-x-scroll scrollbar-none scroll-smooth"
               ref={containerRef}
             >
-              {loading &&
+              {/* {loading &&
                 loadingCardNumber.map((_, index) => {
                   return (
                     <CardLoading
                       key={"CategorywiseProductDisplay123" + index}
                     />
                   );
-                })}
+                })} */}
 
               {data.map((p, index) => {
                 return <CardProduct key={index} data={p} />;

@@ -4,14 +4,17 @@ import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import toast from "react-hot-toast";
 import { IoClose } from "react-icons/io5";
+import { AxiosTostError } from "../utils/AxiosToastError";
+import { useGlobalContext } from "../provider/GlobalProvider";
 
 function UploadCategoryModel({ onclose, fetchCategory }) {
   const [data, setData] = useState({
     name: "",
     image: "",
   });
-  const [loading, setLoding] = useState(false);
+  const [loading, setLoadingImg] = useState(false);
 
+  const {setLoading}=useGlobalContext()
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => {
@@ -25,7 +28,7 @@ function UploadCategoryModel({ onclose, fetchCategory }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoding(true);
+      setLoading(true);
       const response = await Axios({
         ...SummaryApi.add_Category,
         data: data,
@@ -38,14 +41,15 @@ function UploadCategoryModel({ onclose, fetchCategory }) {
     } catch (error) {
       console.log(error);
     } finally {
-      setLoding(false);
+      setLoading(false);
     }
   };
 
   const handleUploadCategory = async (e) => {
-    const file = e.target.files[0];
+    try {
+      const file = e.target.files[0];
     if (!file) return;
-    setLoding(true);
+    setLoadingImg(true);
     const response = await uploadImage(file);
     const { data: ImageResponse } = response;
     setData((prev) => {
@@ -54,7 +58,12 @@ function UploadCategoryModel({ onclose, fetchCategory }) {
         image: ImageResponse.data.url,
       };
     });
-    setLoding(false);
+    } catch (error) {
+      AxiosTostError(error)
+    }finally{
+
+      setLoadingImg(false);
+    }
   };
   return (
     <section className="fixed top-0 bottom-0 left-0 right-0 p-4 bg-neutral-800/60 flex items-center z-40 justify-center">
@@ -104,7 +113,7 @@ function UploadCategoryModel({ onclose, fetchCategory }) {
                                 px-4 py-2 rounded cursor-pointer border font-medium
                             `}
                 >
-                  upload Image
+                  {loading?("Loading"):("Upload Image")}
                 </div>
                 <input
                   disabled={!data.name}

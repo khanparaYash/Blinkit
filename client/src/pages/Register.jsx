@@ -7,12 +7,14 @@ import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import { AxiosTostError } from "../utils/AxiosToastError";
 import Loading from "../components/Loading";
+import { useGlobalContext } from "../provider/GlobalProvider";
 
 
 function Register() {
   const [passwordshow, setPasswordshow] = useState(false);
   const navigate = useNavigate();
-const [loading,setLoading]=useState(false)
+  
+    const {setLoading}=useGlobalContext()
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -37,7 +39,7 @@ const [loading,setLoading]=useState(false)
     if (data.password !== data.confirmPassword) {
       toast.error("Password and conform Password must be same");
       return;
-    }
+    } 
     try {
       setLoading(true)
       const response = await Axios({
@@ -64,7 +66,7 @@ const [loading,setLoading]=useState(false)
 
   return (
     <section className="w-full container mx-auto px-2">
-      {loading&&(<Loading/>)}
+      
       <div className="bg-white my-4 w-full max-w-lg mx-auto rounded p-7">
         <p>Welcome to Blinkeyit</p>
 

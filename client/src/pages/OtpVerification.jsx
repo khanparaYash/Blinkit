@@ -5,10 +5,14 @@ import toast from "react-hot-toast";
 import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import { AxiosTostError } from "../utils/AxiosToastError";
+import Loading from "../components/Loading";
+import { useGlobalContext } from "../provider/GlobalProvider";
 
 function OtpVerification() {
   const [data, setData] = useState(["", "", "", "", "", ""]);
   const navigate = useNavigate();
+  
+    const {setLoading}=useGlobalContext()
   const inputRef = useRef([]);
   const location = useLocation();
 
@@ -20,6 +24,7 @@ function OtpVerification() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true)
       const response = await Axios({
         ...SummaryApi.forgot_password_otp_verification,
         data: {
@@ -27,7 +32,7 @@ function OtpVerification() {
           email: location?.state?.email,
         },
       });
-      console.log(response.data);
+      
       
       if (response.data.success) {
         toast.success(response.data.message);
@@ -43,11 +48,14 @@ function OtpVerification() {
       }
     } catch (error) {
       AxiosTostError(error);
+    }finally{
+      setLoading(false)
     }
   };
 
   return (
     <section className="w-full container mx-auto px-2">
+      
       <div className="bg-white my-4 w-full max-w-lg mx-auto rounded p-7">
         <p className="font-semibold text-lg">Enter OTP</p>
         <form className="grid gap-4 py-4" onSubmit={handleSubmit}>
