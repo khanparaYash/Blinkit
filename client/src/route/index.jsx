@@ -22,7 +22,7 @@ import UserMenuMobile from "../pages/UserMenuMobile";
 import CartMobile from "../pages/CartMobile";
 import Checkout from "../pages/Checkout";
 import Success from "../pages/Success"
-import Cancel from "../pages/cancel";
+import Cancel from "../pages/Cancel";
 const router=createBrowserRouter([
     {
         path:"/",

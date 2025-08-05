@@ -3,7 +3,6 @@ import { Axios } from "../utils/Axios";
 import { SummaryApi } from "../common/SummaryApi";
 import { useDispatch, useSelector } from "react-redux";
 import { handleAddItemCart } from "../store/cartSlice";
-import { AxiosTostError } from "../utils/AxiosToastError";
 import toast from "react-hot-toast";
 import { handleAddAddress } from "../store/addressSlice";
 import { setOrder } from "../store/orderSlice";
@@ -47,7 +46,8 @@ const GlobalProvider = ({ children }) => {
         fetchCartItem();
       }
     } catch (error) {
-      AxiosTostError(error);
+      console.log(error);
+      
     }
   };
   const deleteCartItem = async (cartId) => {
@@ -61,7 +61,8 @@ const GlobalProvider = ({ children }) => {
         fetchCartItem();
       }
     } catch (error) {
-      AxiosTostError(error);
+      console.log(error);
+      
     }
   };
   const user = useSelector((state) => state.user.user);
@@ -73,7 +74,8 @@ const GlobalProvider = ({ children }) => {
       });
       if (response.data.success) dispatch(handleAddAddress(response.data.data));
     } catch (error) {
-      AxiosTostError(error);
+      console.log(error);
+      
     }
   };
 
