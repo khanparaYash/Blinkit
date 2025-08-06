@@ -6,7 +6,6 @@ import { handleAddItemCart } from "../store/cartSlice";
 import toast from "react-hot-toast";
 import { handleAddAddress } from "../store/addressSlice";
 import { setOrder } from "../store/orderSlice";
-import Loading from "../components/Loading";
 import { pricewithDiscount } from "../utils/pricewithDiscount";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -19,9 +18,10 @@ const GlobalProvider = ({ children }) => {
   const dispatch = useDispatch();
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQty, setTotalQty] = useState(0);
-  const [notDiscountTotalPrice,setNotDiscountTotalPrice] = useState(0)
+  const [notDiscountTotalPrice, setNotDiscountTotalPrice] = useState(0);
   const cartItem = useSelector((state) => state?.cart?.cart);
   const [loading, setLoading] = useState(false);
+
   const fetchCartItem = async () => {
     try {
       const response = await Axios({
@@ -47,7 +47,6 @@ const GlobalProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error);
-      
     }
   };
   const deleteCartItem = async (cartId) => {
@@ -62,10 +61,9 @@ const GlobalProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error);
-      
     }
   };
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user);
 
   const fetchAddress = async () => {
     try {
@@ -75,7 +73,6 @@ const GlobalProvider = ({ children }) => {
       if (response.data.success) dispatch(handleAddAddress(response.data.data));
     } catch (error) {
       console.log(error);
-      
     }
   };
 
@@ -100,24 +97,29 @@ const GlobalProvider = ({ children }) => {
     }, 0);
     setTotalQty(Qty);
 
- const tPrice = cartItem.reduce((preve,curr)=>{
-          const priceAfterDiscount = pricewithDiscount(curr?.productId?.price,curr?.productId?.discount)
+    const tPrice = cartItem.reduce((preve, curr) => {
+      const priceAfterDiscount = pricewithDiscount(
+        curr?.productId?.price,
+        curr?.productId?.discount
+      );
 
-          return preve + (priceAfterDiscount * curr.quantity)
-      },0)
+      return preve + priceAfterDiscount * curr.quantity;
+    }, 0);
     setTotalPrice(tPrice);
 
-     const notDiscountPrice = cartItem.reduce((prev,curr)=>{
-        return prev + (curr?.productId?.price * curr.quantity)
-      },0)
-      setNotDiscountTotalPrice(notDiscountPrice)
+    const notDiscountPrice = cartItem.reduce((prev, curr) => {
+      return prev + curr?.productId?.price * curr.quantity;
+    }, 0);
+    setNotDiscountTotalPrice(notDiscountPrice);
   }, [cartItem]);
 
   useEffect(() => {
-    fetchCartItem();
-    fetchAddress();
-    fetchOrder();
-  }, [user]);
+    if (user?._id) {
+      fetchCartItem();
+      fetchAddress();
+      fetchOrder();
+    }
+  }, [user?._id]);
 
   return (
     <GlobalContext.Provider

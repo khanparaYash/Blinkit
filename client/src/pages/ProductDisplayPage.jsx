@@ -11,6 +11,7 @@ import image3 from "../assets/image3.png";
 import { useGlobalContext } from "../provider/GlobalProvider";
 import { DisplayPriceInRupees } from "../utils/DisplayPriceInRupees";
 import { pricewithDiscount } from "../utils/pricewithDiscount";
+import WishlistLike from "../components/WishlistLike";
 function ProductDisplayPage() {
   const params = useParams();
   let productId = params?.product?.split("-").slice(-1)[0];
@@ -20,6 +21,7 @@ function ProductDisplayPage() {
   const { setLoading } = useGlobalContext();
   const imageContainer = useRef();
   // console.log(product);
+
 
   const fetchProductDetails = async () => {
     try {
@@ -155,23 +157,26 @@ function ProductDisplayPage() {
               )}
             </div>
             {data.discount ? (
-              <p className="line-through" >
-                {DisplayPriceInRupees(data.price)}
-              </p>
-            ):(<></>)}
+              <p className="line-through">{DisplayPriceInRupees(data.price)}</p>
+            ) : (
+              <></>
+            )}
             {data.discount ? (
               <p className="font-bold text-green-600 lg:text-2xl">
                 {data.discount}%{" "}
                 <span className="text-base text-neutral-500">Discount</span>
               </p>
-            ):(<></>)}
+            ) : (
+              <></>
+            )}
           </div>
         </div>
         {data.stock === 0 ? (
           <p className="text-lg text-red-500 my-2">Out of Stock</p>
         ) : (
-          <div className="my-4">
+          <div className="my-4 ">
             <AddToCart data={data} />
+            <div className="m-2" ><WishlistLike data={data} /></div>
           </div>
         )}
 

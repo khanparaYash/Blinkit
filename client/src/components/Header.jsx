@@ -20,7 +20,11 @@ function Header() {
   const user = useSelector((state) => state?.user);
   const [openUserMenu, setOpenUserMenu] = useState(false);
   const [OpenCartSection, setOpenCartSection] = useState(false);
-  const { totalQty, totalPrice } = useGlobalContext();
+  const { totalQty, totalPrice } = useGlobalContext() || {};
+  // let totalQty, totalPrice 
+  // if(contex){
+  //     ({ totalQty, totalPrice } = contex); 
+  // }
   const cartItem = useSelector((state) => state.cart.cart);
   const handelCloseUserMenu = () => {
     setOpenUserMenu(false);

@@ -29,14 +29,17 @@ export async function CashOnDeliveryOrderController(req, res) {
     });
 
     const generatedOrder = await OrderModel.insertMany(payload);
-
+    const orderIds = generatedOrder.map((o) => o._id);
     ///remove from the cart
     const removeCartItems = await CartProductModel.deleteMany({
       userId: userId,
     });
     const updateInUser = await UserModel.updateOne(
       { _id: userId },
-      { shopping_cart: [] }
+      {
+        $set: { shopping_cart: [] },
+        $push: { orderHistory: { $each: orderIds } },
+      }
     );
 
     return res.json({

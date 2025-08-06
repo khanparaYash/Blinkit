@@ -3,7 +3,7 @@ import App from "../App";
 import Home from "../pages/Home";
 import SearchPage from "../pages/SearchPage";
 import Login from "../pages/Login";
-import Register from "../pages/Register"
+import Register from "../pages/Register";
 import ForgotPassword from "../pages/ForgotPassword";
 import OtpVerification from "../pages/OtpVerification";
 import ResetPassword from "../pages/ResetPassword";
@@ -21,113 +21,134 @@ import ProductDisplayPage from "../pages/ProductDisplayPage";
 import UserMenuMobile from "../pages/UserMenuMobile";
 import CartMobile from "../pages/CartMobile";
 import Checkout from "../pages/Checkout";
-import Success from "../pages/Success"
+import Success from "../pages/Success";
 import Cancel from "../pages/Cancel";
-const router=createBrowserRouter([
-    {
-        path:"/",
-        element:<App/>,
-        children:[
-            {
-                path:"",
-                element:<Home/>
-            },
-            {
-                path:"search",
-                element:<SearchPage/>
-            },
-            {
-                path:"login",
-                element:<Login/>
-            },
-            {
-                path:"register",
-                element:<Register/>
-            },
-            {
-                path:"forgot-password",
-                element:<ForgotPassword/>
-            },
-            {
-                path:"otp-verification",
-                element:<OtpVerification/>
-            },
-            {
-                path:"reset-password",
-                element:<ResetPassword/>
-            },
-            {
-                path:"address",
-                element:<Address/>
-            },
-            {
-                path:"dashboard",
-                element:<Dashboard/>,
-                children:[
-                    {
-                        path:"profile",
-                        element:<Profile/>
-                    },
-                    {
-                        path:"myOrders",
-                        element:<MyOrder/>
-                    },
-                    {
-                        path:"address",
-                        element:<Address/>
-                    },
-                    {
-                        path:"category",
-                        element: <AdminPermision><CategoryPage/></AdminPermision>
-                    },
-                    {
-                        path:"sub-category",
-                        element:<AdminPermision><SubCategory/></AdminPermision>
-                    },
-                    {
-                        path:"upload-product",
-                        element:<AdminPermision><UploadProduct/></AdminPermision>
-                    },
-                    {
-                        path:"product",
-                        element:<AdminPermision><ProductAdmin/></AdminPermision>
-                    },
-                ]
-            },
-            {
-                path:"user",
-                element:<UserMenuMobile/>
-            },
-            {
-                path:":category",
-                children:[
-                    {
-                        path:":subCategory",
-                        element:<ProductListPage/>
-                    }
-                ]
-            },
-            {
-                path:"product/:product",
-                element:<ProductDisplayPage/>
-            },
-            {
-                path:"cart",
-                element:<CartMobile/>
-            },
-            {
-                path:"checkout",
-                element:<Checkout/>
-            },
-            {
-                path:"success",
-                element:<Success/>
-            },
-            {
-                path:"cancel",
-                element:<Cancel/>
-            },
-        ]
-    }
-])
-export default router
+import Wishlist from "../pages/Wishlist";
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        path: "",
+        element: <Home />,
+      },
+      {
+        path: "search",
+        element: <SearchPage />,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "register",
+        element: <Register />,
+      },
+      {
+        path: "forgot-password",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "otp-verification",
+        element: <OtpVerification />,
+      },
+      {
+        path: "reset-password",
+        element: <ResetPassword />,
+      },
+      {
+        path: "address",
+        element: <Address />,
+      },
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+        children: [
+          {
+            path: "profile",
+            element: <Profile />,
+          },
+          {
+            path: "wishlist",
+            element: <Wishlist />,
+          },
+          {
+            path: "myOrders",
+            element: <MyOrder />,
+          },
+          {
+            path: "address",
+            element: <Address />,
+          },
+          {
+            path: "category",
+            element: (
+              <AdminPermision>
+                <CategoryPage />
+              </AdminPermision>
+            ),
+          },
+          {
+            path: "sub-category",
+            element: (
+              <AdminPermision>
+                <SubCategory />
+              </AdminPermision>
+            ),
+          },
+          {
+            path: "upload-product",
+            element: (
+              <AdminPermision>
+                <UploadProduct />
+              </AdminPermision>
+            ),
+          },
+          {
+            path: "product",
+            element: (
+              <AdminPermision>
+                <ProductAdmin />
+              </AdminPermision>
+            ),
+          },
+        ],
+      },
+      {
+        path: "user",
+        element: <UserMenuMobile />,
+      },
+      {
+        path: ":category",
+        children: [
+          {
+            path: ":subCategory",
+            element: <ProductListPage />,
+          },
+        ],
+      },
+      {
+        path: "product/:product",
+        element: <ProductDisplayPage />,
+      },
+      {
+        path: "cart",
+        element: <CartMobile />,
+      },
+      {
+        path: "checkout",
+        element: <Checkout />,
+      },
+      {
+        path: "success",
+        element: <Success />,
+      },
+      {
+        path: "cancel",
+        element: <Cancel />,
+      },
+    ],
+  },
+]);
+export default router;

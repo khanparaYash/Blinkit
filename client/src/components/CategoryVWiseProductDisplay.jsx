@@ -10,13 +10,16 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { validURLConverter } from "../utils/validURlConvert";
 import CardLoading from "./CardLoading.jsx";
 import { useGlobalContext } from "../provider/GlobalProvider.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { setCategoryProducts } from "../store/cataegoryProductSlice.js";
 
 function CategoryVWiseProductDisplay({ id, name }) {
-  const [data, setData] = useState([]);
   const containerRef = useRef();
-  // const subCategoryData = useSelector((state) => state.product.allSubCategory);
-  // const loadingCardNumber = new Array(6).fill(null);
-  // const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const categoryCache = useSelector((state) => state?.categoryProduct?.categories[id]);
+
+  
+  const [data, setData] = useState(categoryCache?.data||[]);
 
   const {setLoading}=useGlobalContext()
   const fetchCategoryWiseProduct = async () => {
@@ -27,7 +30,9 @@ function CategoryVWiseProductDisplay({ id, name }) {
         data: { id: id },
       });
       if (response.data.success) {
-        setData(response.data.data);
+         const products = response.data.data;
+        setData(products);
+        dispatch(setCategoryProducts({ categoryId: id, products }));
         // toast.success(response.data.message);
       }
     } catch (error) {
@@ -37,8 +42,16 @@ function CategoryVWiseProductDisplay({ id, name }) {
     }
   };
   useEffect(() => {
-    fetchCategoryWiseProduct();
-  }, []);
+    const now = Date.now();
+    const cacheAge = now - (categoryCache?.lastFetched || 0);
+    const cacheTTL = 10 * 60 * 1000; 
+    if (!categoryCache || cacheAge > cacheTTL) {
+      fetchCategoryWiseProduct();
+    } else {
+      setData(categoryCache.data);
+    }
+
+  }, [id]);
   const handleScrollRight = () => {
     containerRef.current.scrollLeft += 200;
   };
@@ -48,17 +61,6 @@ function CategoryVWiseProductDisplay({ id, name }) {
   };
 
   const handleRedirectProductListpage = () => {
-    // const subcategory = subCategoryData?.find((sub) => {
-    //   const filterData = sub.category.some((c) => {
-    //     return c._id == id;
-    //   });
-
-    //   return filterData ? true : null;
-    // });
-    // console.log(subCategoryData);
-    // console.log("56");
-    
-    // console.log(data);
     
     
     const url = `/${validURLConverter(name)}-${id}/${validURLConverter(

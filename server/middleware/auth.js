@@ -6,7 +6,7 @@ export const auth = async (req, res, next) => {
       req.cookies.accessToken || req.headers?.authorization?.split(" ")[1];
     if (!token) {
       return res.status(401).json({
-        message: "provide token",
+        message: "Login required",
         error: true,
         success: false,
       });
@@ -14,7 +14,7 @@ export const auth = async (req, res, next) => {
     const decode = await jwt.verify(token, process.env.SECRET_KEY_ACCESS_TOKEN);
     if (!decode) {
       return res.status(401).json({
-        message: "unauthorized access",
+        message: "Login required",
         error: true,
         success: false,
       });

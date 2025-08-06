@@ -23,6 +23,7 @@ function Home() {
     )}-${subcategory._id}`;
     navigate(url);
   };
+
   return (
     <section className="bg-white">
       <div className="container mx-auto  ">
@@ -42,7 +43,7 @@ function Home() {
               return (
                 <div
                   key={index}
-                  className="bg-white rounded-2xl p-4 min-h-40 grid gap-2 shadow animate-pulse"
+                  className="bg-white rounded-2xl p-4 min-h-40 w-full grid gap-2 shadow animate-pulse"
                 >
                   <div className="bg-blue-100 min-h-24 rounded-2xl"></div>
                   <div className="bg-blue-100 h-8 rounded-2xl"></div>

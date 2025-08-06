@@ -149,4 +149,16 @@ export const SummaryApi = {
     url:"api/order/order-list",
     method:"get"
   },
+  add_to_wishlist:{
+    url:"api/wishlist/add-ToWishlist",
+    method:"post"
+  },
+  remove_to_wishlist:{
+    url:"api/wishlist/remove-ToWishlist",
+    method:"delete"
+  },
+  get_to_wishlist:{
+    url:"api/wishlist/get-Wishlist",
+    method:"get"
+  },
 };

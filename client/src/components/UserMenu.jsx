@@ -96,6 +96,13 @@ function UserMenu({ close }) {
         </Link>
         <Link
           onClick={handelCloseUserMenu}
+          to="/dashboard/wishlist"
+          className="px-2 hover:bg-orange-200 py-1"
+        >
+          WishList
+        </Link>
+        <Link
+          onClick={handelCloseUserMenu}
           to="/dashboard/address"
           className="px-2 hover:bg-orange-200 py-1"
         >
